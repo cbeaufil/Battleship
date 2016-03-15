@@ -6,5 +6,11 @@ Chris Beaufils:
 
 Matt Reilly:
 
+3/10/16 2 hours - Making small examples with SDL
+3/14/16 3 hours - Working on text based Battleship game
+
 
 David Durkin:
+
+3/9/16 2.5 hours - Looking through SDL tutorials
+3/14/16 3.5 hours - Beginning work on text based Battleship
