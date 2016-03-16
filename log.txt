@@ -2,7 +2,12 @@ Log of time spent working on our project
 
 
 Chris Beaufils:
-
+3/2/16 1 hour - Lab 7
+3/10/16 2 hours - Learning SDL through the tutorials.
+3/12/16 1 hour - Continued reviewing SDL tutorials.
+3/14/16 1 hour - Began working on battleship game, created the board 
+class.
+3/16/16 1 hour - Lab 8
 
 Matt Reilly:
 
