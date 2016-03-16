@@ -8,6 +8,7 @@ Matt Reilly:
 
 3/10/16 2 hours - Making small examples with SDL
 3/14/16 3 hours - Working on text based Battleship game
+3/15/16 3 hours - Researching and compiling images/icons that will be useful in the battleship game, using them in example programs with SDL
 
 
 David Durkin:
