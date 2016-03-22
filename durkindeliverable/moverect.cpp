@@ -1,5 +1,5 @@
 //David Durkin
-//SDL Image moving program
+//SDL program; User driven movement of a blue square
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -8,8 +8,8 @@
 #include <cmath>
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 500;
+const int SCREEN_HEIGHT = 500;
 
 //Rectangle class
 class Rectangle{
@@ -56,20 +56,36 @@ void Rectangle::handleEvent( SDL_Event& e ){
 	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
         //Change the velocity
         switch( e.key.keysym.sym ){
-            case SDLK_UP: yvel -= RECT_VEL; break;
-            case SDLK_DOWN: yvel += RECT_VEL; break;
-            case SDLK_LEFT: xvel -= RECT_VEL; break;
-            case SDLK_RIGHT: xvel += RECT_VEL; break;
+            case SDLK_UP: 
+		yvel -= RECT_VEL; 
+		break;
+            case SDLK_DOWN: 
+		yvel += RECT_VEL; 
+		break;
+            case SDLK_LEFT: 
+		xvel -= RECT_VEL; 
+		break;
+            case SDLK_RIGHT: 
+		xvel += RECT_VEL; 
+		break;
         }
     }
     //If key released
     else if( e.type == SDL_KEYUP && e.key.repeat == 0 ){
         //Change the velocity
         switch( e.key.keysym.sym ){
-            case SDLK_UP: yvel += RECT_VEL; break;
-            case SDLK_DOWN: yvel -= RECT_VEL; break;
-            case SDLK_LEFT: xvel += RECT_VEL; break;
-            case SDLK_RIGHT: xvel -= RECT_VEL; break;
+            case SDLK_UP: 
+		yvel += RECT_VEL; 
+		break;
+            case SDLK_DOWN: 
+		yvel -= RECT_VEL; 
+		break;
+            case SDLK_LEFT: 
+		xvel += RECT_VEL; 
+		break;
+            case SDLK_RIGHT: 
+		xvel -= RECT_VEL; 
+		break;
         }
     }
 
@@ -82,8 +98,7 @@ void Rectangle::move(){
     xpos += xvel;
 
     //If the rectangle moves out of window, move it back
-    if( ( xpos < 0 ) || ( xpos + RECT_WIDTH > SCREEN_WIDTH ) )
-    {
+    if( ( xpos < 0 ) || ( xpos + RECT_WIDTH > SCREEN_WIDTH ) ){
         xpos -= xvel;
     }
 
@@ -91,8 +106,7 @@ void Rectangle::move(){
     ypos += yvel;
 
     //Same as previous
-    if( ( ypos < 0 ) || ( ypos + RECT_HEIGHT > SCREEN_HEIGHT ) )
-    {
+    if( ( ypos < 0 ) || ( ypos + RECT_HEIGHT > SCREEN_HEIGHT ) ){
         ypos -= yvel;
     }
 
@@ -101,8 +115,8 @@ void Rectangle::move(){
 //Render the rectangle on the screen
 void Rectangle::render(){
 
-	SDL_Rect fillRect = { xpos, ypos, xpos+RECT_WIDTH , ypos+RECT_HEIGHT };
-	SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF );		
+	SDL_Rect fillRect = { xpos, ypos, RECT_WIDTH ,RECT_HEIGHT };
+	SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0xFF, 0xFF );		
 	SDL_RenderFillRect( gRenderer, &fillRect );
 
 }
@@ -118,11 +132,6 @@ bool init(){
 		result = false;
 	}
 	else{
-		//Set texture filtering to linear
-		if( !SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1") ){
-			printf("Warning: Linear texture filtering not enabled!");
-		}
-
 		//Create a window
 		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if( gWindow == NULL ){
@@ -140,12 +149,6 @@ bool init(){
 				//Initialize renderer color
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-				//Initialize PNG loading
-				int imgFlags = IMG_INIT_PNG;
-				if( !( IMG_Init(imgFlags ) & imgFlags ) ){
-					printf("SDL_image image initialization failed! SDL_image Error: %s\n", IMG_GetError());
-					result = false;
-				}
 			}
 		}
 	}
@@ -155,7 +158,6 @@ bool init(){
 
 //Shut things down
 void close(){
-
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
@@ -164,8 +166,8 @@ void close(){
 	SDL_Quit();
 }
 
-int main( int argc, char* args[] )
-{
+int main( int argc, char* args[] ){
+	
 	//Start up SDL and create window
 	if( !init() ){
 		printf( "Failed to initialize!\n" );
@@ -181,7 +183,7 @@ int main( int argc, char* args[] )
 
 		//While application is running
 		while( !quit ){
-			//Handle events on queue
+			//Handle events
 			while( SDL_PollEvent( &e ) != 0 ){
 				//User requests quit
 				if( e.type == SDL_QUIT ){
