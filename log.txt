@@ -24,3 +24,4 @@ David Durkin:
 3/9/16 2.5 hours - Looking through SDL tutorials
 3/14/16 3.5 hours - Beginning work on text based Battleship
 3/20/16 4 hours - Work on basic SDL program
+3/22/16 1.5 hours - finishing SDL program
