@@ -8,6 +8,8 @@ Chris Beaufils:
 3/14/16 1 hour - Began working on battleship game, created the board 
 class.
 3/16/16 1 hour - Lab 8
+3/20/16 3 hours - SDL tutorials, began graphics program.
+3/21/16 2 hours - Working on basic SDL program, creating the board image.
 
 Matt Reilly:
 
