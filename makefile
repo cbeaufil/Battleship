@@ -1,10 +1,9 @@
 battleship: battleship.o Board.o
-	g++ battleship.o -o battleship
+	g++ battleship.o Board.o -o battleship
 
-battleship.o: battleship.cpp Board.h
-	g++ -c battleship.cpp
-Board.o: Board.cpp Board.h
-	g++ -o Board.cpp
+battleship.o: battleship.cpp Board.h makefile
+
+Board.o: Board.cpp Board.h makefile
 
 clean:
 	rm -f *.o battleship
