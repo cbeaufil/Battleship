@@ -15,10 +15,17 @@ class Board {
 
 	public:
 	Board(int size=10);
+	void play();
+	int checkValid(int, int);
 
 	private:
 	int boardSize;
-	vector< vector<char> > display;
+	int spotA;
+	int spotB;
+	int previousPosition;
+	vector< vector<char> > userBoard;
+	vector< vector<char> > computerBoard;
+	
 
 };
 #endif

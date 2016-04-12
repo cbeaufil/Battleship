@@ -8,6 +8,8 @@
 using namespace std;
 
 int main() {
-	Board board1;
-	cout << board1;
+	Board user;
+	cout << user << endl << endl;
+
+	user.play();
 }
