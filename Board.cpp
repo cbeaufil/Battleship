@@ -6,6 +6,10 @@
 #include "Ship.h"
 #include <iostream>
 #include <string>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7612f112d56655db605b69e6131871668c599326
 using namespace std;
 
 Board::Board(int size) {
@@ -19,6 +23,10 @@ Board::Board(int size) {
 
 	for (int i=0; i < boardSize; i++) {
 		userBoard.push_back(row); // create the puzzle one row at a time
+<<<<<<< HEAD
+=======
+		computerBoard.push_back(row);
+>>>>>>> 7612f112d56655db605b69e6131871668c599326
 	}		
 }
 
@@ -34,6 +42,7 @@ ostream & operator<<(ostream & output, const Board& b) {
 	return output;
 }
 
+<<<<<<< HEAD
 void Board::userplaceship(Ship s, int row, int col, int vertical){
 	
 	if(s.getName() == "Carrier"){
@@ -74,6 +83,64 @@ void Board::userplaceship(Ship s, int row, int col, int vertical){
 		cout << "Improper board name" << endl;
 	}
 }
+=======
+void Board::play() {
+	char letterChoice;
+	int game = 1;
+
+	// placeships();
+
+	while (game) {
+		// Player Turn
+		do {
+			cout << "Choose a letter to select a spot to send in a missile: ";
+			cin >> letterChoice;
+			spotA = toupper(letterChoice) - 65;
+			cout << "Choose a number to select a spot to send in a missile: ";
+			cin >> spotB;
+			spotB = spotB - 1;
+			if (checkValid(spotA, spotB)) {
+				break;
+			}
+		} while (1);
+
+		previousPosition = computerBoard[spotA][spotB];
+		if (computerBoard[spotA][spotB] != 'O') {
+			computerBoard[spotA][spotB] = 'H';
+			cout << "That's a hit!" << endl;
+		}
+		else {
+			computerBoard[spotA][spotB] = 'M';
+			cout << "You missed!" << endl;
+		}
+
+		// AI Turn
+		// Reilly inputs computer turn here. Already instantiated a board for the user and the computer.
+	// cout << computerBoard;
+	}
+
+}
+
+int Board::checkValid(int spotA, int spotB) {
+	
+	if (spotA > 9 || spotA < 0) {
+		cout << "You cannot shoot a missle here, try a new strategy!" << endl;
+		return 0;
+	}
+	else if (spotB > 9 || spotB < 0) {
+		cout << "You cannot shoot a missle here, try a new strategy!" << endl;
+		return 0;
+	}
+	else if (computerBoard[spotA][spotB] == 'M') {
+		cout << "You have already shot a missle here! Try a new strategy." << endl;
+		return 0;
+	}
+
+	return 1;
+}
+
+
+>>>>>>> 7612f112d56655db605b69e6131871668c599326
 
 void Board::computerplaceship(Ship s, int row, int col, int vertical){
 	if(s.getName() == "Carrier"){
