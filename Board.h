@@ -15,17 +15,15 @@ class Board {
 
 	public:
 	Board(int size=10);
-<<<<<<< HEAD
-	void userplaceship(Ship s, int, int);
-	void computerplaceship(Ship s, int, int);
-
-	private:
-	int boardSize;
-	vector< vector<char> > userBoard;
-	vector< vector<char> > computerBoard;
-=======
+	void userplaceship(Ship s, int, int, int);
+	void computerplaceship(Ship s, int, int, int);
 	void play();
 	int checkValid(int, int);
+	char getUser(int, int) const;
+	char getComputer(int, int);
+	void displayUser();
+	void displayComputer();
+	void placeUserShips();
 
 	private:
 	int boardSize;
@@ -34,10 +32,9 @@ class Board {
 	int previousPosition;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;
-	
->>>>>>> 7612f112d56655db605b69e6131871668c599326
 
 };
+
 #endif
 
 
