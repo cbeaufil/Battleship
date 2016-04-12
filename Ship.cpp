@@ -3,8 +3,9 @@
 
 #include "Ship.h"
 
-Ship::Ship(){
-	vertical = 0;
+Ship::Ship(int verticalIN, string nameIN){
+	vertical = verticalIN;
+	name = nameIN;
 }
 
 void Ship::setOrientation(int verticalIn){
@@ -13,4 +14,12 @@ void Ship::setOrientation(int verticalIn){
 
 int Ship::getVertical(){
 	return vertical;
+}
+
+void Ship::setName(string in){
+	name = in;
+}
+
+string Ship::getName(){
+	return name;
 }

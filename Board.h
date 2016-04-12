@@ -4,7 +4,7 @@
 
 #ifndef BOARD
 #define BOARD
-
+#include "Ship.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -15,10 +15,13 @@ class Board {
 
 	public:
 	Board(int size=10);
+	void userplaceship(Ship s, int, int);
+	void computerplaceship(Ship s, int, int);
 
 	private:
 	int boardSize;
-	vector< vector<char> > display;
+	vector< vector<char> > userBoard;
+	vector< vector<char> > computerBoard;
 
 };
 #endif
