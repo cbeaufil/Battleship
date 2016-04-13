@@ -140,7 +140,7 @@ void Board::placeUserShips(){
 		cout << "Number: ";
 		cin >> number;
 		col = number - 1;
-		cout << "1 for Vertical, 0 for Horizontal";
+		cout << "1 for Vertical, 0 for Horizontal: ";
 		cin >> vertical;
 		userplaceship(Carrier, row, col, vertical);
 		
