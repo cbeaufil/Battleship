@@ -1,6 +1,5 @@
-/*cse20212, board.cpp
-
-*/
+/* cse20212, board.cpp
+ */
 
 #include "Board.h"
 #include "Ship.h"
@@ -95,6 +94,8 @@ void Board::play() {
 			cout << "You missed!" << endl;
 		}
 
+		computerPlay();
+
 		// AI Turn
 		// Reilly inputs computer turn here. Already instantiated a board for the user and the computer.
 	 	displayComputer();
@@ -142,11 +143,54 @@ void Board::placeUserShips(){
 		col = number - 1;
 		cout << "1 for Vertical, 0 for Horizontal: ";
 		cin >> vertical;
-		userplaceship(Carrier, row, col, vertical);
-		
+		userplaceship(Carrier, row, col, vertical);	
 	}
+}
 
+void Board::placeComputerShips() {
+	int play = 1;
+	int number, row, col, vertical = rand() % 2;
+	Ship compCarrier(1, "Carrier");
+	Ship compBattleship(1, "Battleship");
+	Ship compSubmarine(1, "Submarine");
+	Ship compDestroyer(1, "Destroyer");
+	Ship compPatrolBoat(1, "PatrolBoat");
 
+	computerplaceship(compCarrier, randrow(), randcol(), vertical);
+	computerplaceship(compBattleship, randrow(), randcol(), vertical);
+	computerplaceship(compSubmarine, randrow(), randcol(), vertical);
+	computerplaceship(compDestroyer, randrow(), randcol(), vertical);
+	computerplaceship(compPatrolBoat, randrow(), randcol(), vertical);
+}
+
+int randrow() {
+	return rand() % 10;
+}
+
+int randcol() {
+	return rand() % 10;
+}
+
+void Board::computerPlay() {
+    int row = randrow(), col = randcol();
+	if (compOnTarget) {
+		checkForAdjacentHits();
+    } else if (userBoardBoard[row][col] == 'C' || userBoardBoard[row][col] == 'B' || userBoardBoard[row][col] == 'S' || userBoardBoard[row][col] == 'D' || userBoardBoard[row][col] == 'P') {
+        cout << "Computer hit!" << endl;
+        userBoard[row][col] = 'H'
+        compOnTarget = 1;
+        compPrevRow = row;
+        compPrevCol = col;
+    } else if (userBoard[row][col] == 'O') {
+        userBoard[row][col] = 'M';
+        cout << "Computer miss!" << endl;
+    }
+}
+
+int checkForAdjacentHits() {
+    if (userBoard[copmPrevRow + 1][compPrevCol] == 'H') {
+        
+    }
 }
 
 void Board::userplaceship(Ship s, int row, int col, int vertical){

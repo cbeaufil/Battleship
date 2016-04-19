@@ -24,17 +24,22 @@ class Board {
 	void displayUser();
 	void displayComputer();
 	void placeUserShips();
+    int randrow();
+    int randcol();
+    void placeComputerShips();
 
 	private:
 	int boardSize;
 	int spotA;
 	int spotB;
 	int previousPosition;
+    int compPrevRow;
+    int compPrevCol;
+    int compOnTarget = 0;   // Was last shot a hit?
+    int compPrevHit;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;
 
 };
 
 #endif
-
-
