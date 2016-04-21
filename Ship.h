@@ -9,7 +9,7 @@ using namespace std;
 class Ship {
 
 public:
-	Ship(int verticalIN, string nameIN);
+	Ship(string nameIN, int verticalIN);
 	void setOrientation(int);
 	int getVertical();
 	string getName();

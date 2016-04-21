@@ -1,20 +1,25 @@
-/* cse20212, Board.h
+/* cse20212, BattleshipGame.h
 
 */
 
-#ifndef BOARD
-#define BOARD
+#ifndef BATTLESHIP_H
+#define BATTLESHIP_H
 #include "Ship.h"
+#include "Carrier.h"
+#include "Battleship1.h"
+#include "Destroyer.h"
+#include "Submarine.h"
+#include "PatrolBoat.h"
 #include <iostream>
 #include <vector>
 using namespace std;
 
-class Board {
+class BattleshipGame {
 
-	friend ostream& operator<<(ostream & output, const Board&);
+	friend ostream& operator<<(ostream & output, const BattleshipGame&);
 
 	public:
-	Board(int size=10);
+	BattleshipGame(int size=10);
 	void userplaceship(Ship s, int, int, int);
 	void computerplaceship(Ship s, int, int, int);
 	void play();
@@ -41,6 +46,11 @@ class Board {
     int compPrevHit;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;
+	Carrier carrier;
+	Battleship1 battleship;
+	Destroyer destroyer;
+	Submarine submarine;
+	PatrolBoat patrolboat;
 
 };
 

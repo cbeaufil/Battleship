@@ -1,13 +1,13 @@
-/* cse20212, board.cpp
+/* cse20212, BattleshipGame.cpp
  */
 
-#include "Board.h"
+#include "BattleshipGame.h"
 #include "Ship.h"
 #include <iostream>
 #include <string>
 using namespace std;
 
-Board::Board(int size) {
+BattleshipGame::BattleshipGame(int size) {
 	boardSize = size;
 	compOnTarget = 0;
 
@@ -23,7 +23,7 @@ Board::Board(int size) {
 	}		
 }
 
-ostream & operator<<(ostream & output, const Board& b) {
+ostream & operator<<(ostream & output, const BattleshipGame& b) {
 	for(int i=0; i < b.boardSize; i++) { // loop through each row
 		output << "| ";
         for(int j=0; j < b.boardSize; j++) { // loop through each column
@@ -35,7 +35,7 @@ ostream & operator<<(ostream & output, const Board& b) {
 	return output;
 }
 
-void Board::displayUser(){
+void BattleshipGame::displayUser(){
 	for(int i = 0; i < boardSize; i++){
 		cout << " | ";
 		for(int j = 0; j < boardSize; j++){
@@ -46,7 +46,7 @@ void Board::displayUser(){
 	}
 }
 
-void Board::displayComputer(){
+void BattleshipGame::displayComputer(){
 	for(int i = 0; i < boardSize; i++){
 		cout << " | ";
 		for(int j = 0; j < boardSize; j++){
@@ -57,15 +57,15 @@ void Board::displayComputer(){
 	}
 }
 
-char Board::getUser(int row, int col) const{
+char BattleshipGame::getUser(int row, int col) const{
 	return userBoard[row][col];
 }
 
-char Board::getComputer(int row, int col){
+char BattleshipGame::getComputer(int row, int col){
 	return computerBoard[row][col];
 }
 
-void Board::play() {
+void BattleshipGame::play() {
 	char letterChoice;
 	int game = 1;
 
@@ -98,7 +98,7 @@ void Board::play() {
 		computerPlay();
 
 		// AI Turn
-		// Reilly inputs computer turn here. Already instantiated a board for the user and the computer.
+		// Reilly inputs computer turn here. Already instantiated a BattleshipGame for the user and the computer.
 		cout << "COMPUTER:" << endl;
 	 	displayComputer();
 	 	cout << "USER:" << endl;
@@ -107,7 +107,7 @@ void Board::play() {
 
 }
 
-int Board::checkValid(int spotA, int spotB) {
+int BattleshipGame::checkValid(int spotA, int spotB) {
 	
 	if (spotA > 9 || spotA < 0) {
 		cout << "You cannot shoot a missle here, try a new strategy!" << endl;
@@ -125,17 +125,11 @@ int Board::checkValid(int spotA, int spotB) {
 	return 1;
 }
 
-void Board::placeUserShips(){
+void BattleshipGame::placeUserShips(){
 	cout << "Place Your Ships. Ships will be placed extending to the right of or downwards from your grid selection." << endl; 
 	int play = 1;
 	char letter;
 	int number, row, col, vertical;
-	Ship Carrier(1, "Carrier");
-	Ship Battleship(1, "Battleship");
-	Ship Submarine(1, "Submarine");
-	Ship Destroyer(1, "Destroyer");
-	Ship PatrolBoat(1, "PatrolBoat");
-
 
 	displayUser();
 	cout << "Where would you like to place your Carrier?" << endl;
@@ -147,7 +141,7 @@ void Board::placeUserShips(){
 	col = number - 1;
 	cout << "1 for Vertical, 0 for Horizontal: ";
 	cin >> vertical;
-	userplaceship(Carrier, row, col, vertical);	
+	userplaceship(carrier, row, col, vertical);	
 	displayUser();
 	cout << "Where would you like to place your Battleship?" << endl;
 	cout << "Letter: ";
@@ -158,7 +152,7 @@ void Board::placeUserShips(){
 	col = number - 1;
 	cout << "1 for Vertical, 0 for Horizontal: ";
 	cin >> vertical;
-	userplaceship(Battleship, row, col, vertical);
+	userplaceship(battleship, row, col, vertical);
 	displayUser();
 	cout << "Where would you like to place your Submarine?" << endl;
 	cout << "Letter: ";
@@ -169,7 +163,7 @@ void Board::placeUserShips(){
 	col = number - 1;
 	cout << "1 for Vertical, 0 for Horizontal: ";
 	cin >> vertical;
-	userplaceship(Submarine, row, col, vertical);
+	userplaceship(submarine, row, col, vertical);
 	displayUser();
 	cout << "Where would you like to place your Destroyer?" << endl;
 	cout << "Letter: ";
@@ -180,7 +174,7 @@ void Board::placeUserShips(){
 	col = number - 1;
 	cout << "1 for Vertical, 0 for Horizontal: ";
 	cin >> vertical;
-	userplaceship(Destroyer, row, col, vertical);
+	userplaceship(destroyer, row, col, vertical);
 	displayUser();
 		cout << "Where would you like to place your Patrol Boat?" << endl;
 	cout << "Letter: ";
@@ -191,35 +185,30 @@ void Board::placeUserShips(){
 	col = number - 1;
 	cout << "1 for Vertical, 0 for Horizontal: ";
 	cin >> vertical;
-	userplaceship(PatrolBoat, row, col, vertical);
+	userplaceship(patrolboat, row, col, vertical);
 	displayUser();
 }
 
-void Board::placeComputerShips() {
+void BattleshipGame::placeComputerShips() {
 	int play = 1;
-	int number, row, col, vertical = rand() % 2;
-	Ship compCarrier(1, "Carrier");
-	Ship compBattleship(1, "Battleship");
-	Ship compSubmarine(1, "Submarine");
-	Ship compDestroyer(1, "Destroyer");
-	Ship compPatrolBoat(1, "PatrolBoat");
+	int vertical = rand() % 2;
 
-	computerplaceship(compCarrier, randrow(), randcol(), vertical);
-	computerplaceship(compBattleship, randrow(), randcol(), vertical);
-	computerplaceship(compSubmarine, randrow(), randcol(), vertical);
-	computerplaceship(compDestroyer, randrow(), randcol(), vertical);
-	computerplaceship(compPatrolBoat, randrow(), randcol(), vertical);
+	computerplaceship(carrier, randrow(), randcol(), vertical);
+	computerplaceship(battleship, randrow(), randcol(), vertical);
+	computerplaceship(submarine, randrow(), randcol(), vertical);
+	computerplaceship(destroyer, randrow(), randcol(), vertical);
+	computerplaceship(patrolboat, randrow(), randcol(), vertical);
 }
 
-int Board::randrow() {
+int BattleshipGame::randrow() {
 	return rand() % 10;
 }
 
-int Board::randcol() {
+int BattleshipGame::randcol() {
 	return rand() % 10;
 }
 
-void Board::computerPlay() {
+void BattleshipGame::computerPlay() {
     int row = randrow(), col = randcol();
 	if (compOnTarget) {
 		checkForAdjacentHits();
@@ -235,14 +224,14 @@ void Board::computerPlay() {
     }
 }
 
-int Board::checkForAdjacentHits() {
+int BattleshipGame::checkForAdjacentHits() {
     if (userBoard[compPrevRow + 1][compPrevCol] == 'H') {
         return 1;
     }
     return 0;
 }
 
-void Board::userplaceship(Ship s, int row, int col, int vertical){
+void BattleshipGame::userplaceship(Ship s, int row, int col, int vertical){
 	if(s.getName() == "Carrier"){
 		if (vertical){
 			userBoard[row][col] = 'C';
@@ -308,11 +297,11 @@ void Board::userplaceship(Ship s, int row, int col, int vertical){
 		}
 	}
 	else{
-		cout << "Improper board name" << endl;
+		cout << "Improper ship name" << endl;
 	}
 }
 
-void Board::computerplaceship(Ship s, int row, int col, int vertical){
+void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 	if(s.getName() == "Carrier"){
 		if (vertical){
 			computerBoard[row][col] = 'C';
@@ -378,6 +367,6 @@ void Board::computerplaceship(Ship s, int row, int col, int vertical){
 		}
 	}
 	else{
-		cout << "Improper board name" << endl;
+		cout << "Improper ship name" << endl;
 	}
 }

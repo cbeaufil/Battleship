@@ -3,7 +3,7 @@
 
 #include "Ship.h"
 
-Ship::Ship(int verticalIN, string nameIN){
+Ship::Ship(string nameIN, int verticalIN){
 	vertical = verticalIN;
 	name = nameIN;
 }
