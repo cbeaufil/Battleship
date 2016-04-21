@@ -27,6 +27,8 @@ class Board {
     int randrow();
     int randcol();
     void placeComputerShips();
+	void computerPlay();
+	int checkForAdjacentHits();
 
 	private:
 	int boardSize;
@@ -35,7 +37,7 @@ class Board {
 	int previousPosition;
     int compPrevRow;
     int compPrevCol;
-    int compOnTarget = 0;   // Was last shot a hit?
+    int compOnTarget;   // Was last shot a hit?
     int compPrevHit;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;

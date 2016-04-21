@@ -9,6 +9,7 @@ using namespace std;
 
 Board::Board(int size) {
 	boardSize = size;
+	compOnTarget = 0;
 
 	vector<char> row; // create one vector for each row
 
@@ -98,7 +99,10 @@ void Board::play() {
 
 		// AI Turn
 		// Reilly inputs computer turn here. Already instantiated a board for the user and the computer.
+		cout << "COMPUTER:" << endl;
 	 	displayComputer();
+	 	cout << "USER:" << endl;
+	 	displayUser();
 	}
 
 }
@@ -132,19 +136,63 @@ void Board::placeUserShips(){
 	Ship Destroyer(1, "Destroyer");
 	Ship PatrolBoat(1, "PatrolBoat");
 
-	while(play){
-		displayUser();
-		cout << "Where would you like to place your Carrier?" << endl;
-		cout << "Letter: ";
-		cin >> letter;
-		row = toupper(letter) - 65;
-		cout << "Number: ";
-		cin >> number;
-		col = number - 1;
-		cout << "1 for Vertical, 0 for Horizontal: ";
-		cin >> vertical;
-		userplaceship(Carrier, row, col, vertical);	
-	}
+
+	displayUser();
+	cout << "Where would you like to place your Carrier?" << endl;
+	cout << "Letter: ";
+	cin >> letter;
+	row = toupper(letter) - 65;
+	cout << "Number: ";
+	cin >> number;
+	col = number - 1;
+	cout << "1 for Vertical, 0 for Horizontal: ";
+	cin >> vertical;
+	userplaceship(Carrier, row, col, vertical);	
+	displayUser();
+	cout << "Where would you like to place your Battleship?" << endl;
+	cout << "Letter: ";
+	cin >> letter;
+	row = toupper(letter) - 65;
+	cout << "Number: ";
+	cin >> number;
+	col = number - 1;
+	cout << "1 for Vertical, 0 for Horizontal: ";
+	cin >> vertical;
+	userplaceship(Battleship, row, col, vertical);
+	displayUser();
+	cout << "Where would you like to place your Submarine?" << endl;
+	cout << "Letter: ";
+	cin >> letter;
+	row = toupper(letter) - 65;
+	cout << "Number: ";
+	cin >> number;
+	col = number - 1;
+	cout << "1 for Vertical, 0 for Horizontal: ";
+	cin >> vertical;
+	userplaceship(Submarine, row, col, vertical);
+	displayUser();
+	cout << "Where would you like to place your Destroyer?" << endl;
+	cout << "Letter: ";
+	cin >> letter;
+	row = toupper(letter) - 65;
+	cout << "Number: ";
+	cin >> number;
+	col = number - 1;
+	cout << "1 for Vertical, 0 for Horizontal: ";
+	cin >> vertical;
+	userplaceship(Destroyer, row, col, vertical);
+	displayUser();
+		cout << "Where would you like to place your Patrol Boat?" << endl;
+	cout << "Letter: ";
+	cin >> letter;
+	row = toupper(letter) - 65;
+	cout << "Number: ";
+	cin >> number;
+	col = number - 1;
+	cout << "1 for Vertical, 0 for Horizontal: ";
+	cin >> vertical;
+	userplaceship(PatrolBoat, row, col, vertical);
+	displayUser();
 }
 
 void Board::placeComputerShips() {
@@ -163,11 +211,11 @@ void Board::placeComputerShips() {
 	computerplaceship(compPatrolBoat, randrow(), randcol(), vertical);
 }
 
-int randrow() {
+int Board::randrow() {
 	return rand() % 10;
 }
 
-int randcol() {
+int Board::randcol() {
 	return rand() % 10;
 }
 
@@ -175,9 +223,9 @@ void Board::computerPlay() {
     int row = randrow(), col = randcol();
 	if (compOnTarget) {
 		checkForAdjacentHits();
-    } else if (userBoardBoard[row][col] == 'C' || userBoardBoard[row][col] == 'B' || userBoardBoard[row][col] == 'S' || userBoardBoard[row][col] == 'D' || userBoardBoard[row][col] == 'P') {
+    } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
         cout << "Computer hit!" << endl;
-        userBoard[row][col] = 'H'
+        userBoard[row][col] = 'H';
         compOnTarget = 1;
         compPrevRow = row;
         compPrevCol = col;
@@ -187,10 +235,11 @@ void Board::computerPlay() {
     }
 }
 
-int checkForAdjacentHits() {
-    if (userBoard[copmPrevRow + 1][compPrevCol] == 'H') {
-        
+int Board::checkForAdjacentHits() {
+    if (userBoard[compPrevRow + 1][compPrevCol] == 'H') {
+        return 1;
     }
+    return 0;
 }
 
 void Board::userplaceship(Ship s, int row, int col, int vertical){
