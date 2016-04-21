@@ -30,5 +30,6 @@ David Durkin:
 3/22/16 1.5 hours - finishing SDL program
 4/5/16 2 hours - collecting and editing various images for use in the program
 4/10/16 1 hour - editing the ship.cpp file
-4/12/16 3 hours - finishing up the play function
+4/12/16 1 hour - finishing up the play function
 4/19/16 2 hours - working on AI
+4/21/16 2 hours - implementing inheritance
