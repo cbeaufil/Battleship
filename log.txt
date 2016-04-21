@@ -10,6 +10,8 @@ class.
 3/16/16 1 hour - Lab 8
 3/20/16 3 hours - SDL tutorials, began graphics program.
 3/21/16 2 hours - Working on basic SDL program, creating the board image.
+4/4/16 2 hours - Completed SDL program.
+4/13/16 3 hours - Worked on completing the board, as well as the ship class. Game is functional from the user perspective.
 
 Matt Reilly:
 
