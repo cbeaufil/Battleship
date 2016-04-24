@@ -9,15 +9,19 @@ using namespace std;
 class Ship {
 
 public:
-	Ship(string nameIN, int verticalIN);
+	Ship(string nameIN, int verticalIN, int lengthIN, int hitsIN);
 	void setOrientation(int);
 	int getVertical();
 	string getName();
 	void setName(string);
+	int isSunk();
+	void hit();
 
 private:
 	int vertical;
 	string name;
+	int length;
+	int hits;
 	
 };
 

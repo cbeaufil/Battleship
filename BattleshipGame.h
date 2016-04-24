@@ -34,6 +34,7 @@ class BattleshipGame {
     void placeComputerShips();
 	void computerPlay();
 	int checkForAdjacentHits();
+	int isSunk(Ship s);
 
 	private:
 	int boardSize;
