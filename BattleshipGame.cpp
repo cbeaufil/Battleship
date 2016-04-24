@@ -211,7 +211,7 @@ void BattleshipGame::computerPlay() {
     int row = randrow(), col = randcol();
 	if (compOnTarget) {
 		if (checkForAdjacentHits() == 1) {
-			computerShoot(compNextRow, compNextCol);
+			userBoard[compNextRow][compNextCol];
 			compPrevCol == compNextCol;
 			compPrevRow == compNextRow;
 		}
@@ -226,10 +226,6 @@ void BattleshipGame::computerPlay() {
         userBoard[row][col] = 'M';
         cout << "Computer miss!" << endl;
     }
-}
-
-void computerShoot(int row, int col) {
-	userBoard[row][col] == 'H';
 }
 
 int BattleshipGame::checkForAdjacentHits() {
