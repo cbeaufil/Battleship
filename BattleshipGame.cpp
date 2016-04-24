@@ -209,12 +209,10 @@ int BattleshipGame::randcol() {
 
 void BattleshipGame::computerPlay() {
     int row = randrow(), col = randcol();
+
 	while (compOnTarget) {
-		if (compOnTarget) {
-			if (checkForAdjacentHits() == 1) {
-				compPrevCol == compNextCol;
-				compPrevRow == compNextRow;
-			}
+		if (shipHit) {
+			checkforAdjacentHits();
 	    } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
 		cout << "Computer hit!" << endl;
 		computerShoot(row, col);
@@ -222,16 +220,14 @@ void BattleshipGame::computerPlay() {
 		compOnTarget = 1;
 		compPrevRow = row;
 		compPrevCol = col;
+		shipHit = 1;
 	    } else if (userBoard[row][col] == 'O') {
 		userBoard[row][col] = 'M';
 		cout << "Computer miss!" << endl;
 		compOnTarget = 0;
 	    }
 	}
-}
 
-void computerShoot(int row, int col) {
-	userBoard[row][col] == 'H';
 }
 
 int BattleshipGame::checkForAdjacentHits() {
@@ -242,12 +238,49 @@ int BattleshipGame::checkForAdjacentHits() {
 		count = 1;
 		userBoard[compPrevRow + count][compPrevCol] = 'M';
 		return 0;
-	else if (userBoard[compPrevRow + count][col] == 'C' || userBoard[compPrevRow + count][col] == 'B' || userBoard[compPrevRow + count][col] == 'S' || userBoard[compPrevRow + count][col] == 'D' || userBoard[compPrevRow + count][col] == 'P') {
+	else if (userBoard[compPrevRow + count][compPrevCol] == 'C' || userBoard[compPrevRow + count][compPrevCol] == 'B' || userBoard[compPrevRow + count][compPrevCol] == 'S' || userBoard[compPrevRow + count][compPrevCol] == 'D' || userBoard[compPrevRow + count][compPrevCol] == 'P') {
+		userBoard[compPrevRow + count][compPrevCol] = 'H';
 	    	count += 1;
 	        return 1;
 	}
 
 
+	if (userBoard[compPrevRow - count][compPrevCol] == 'O') {
+		compOnTarget = 0;
+		count = 1;
+		userBoard[compPrevRow - count][compPrevCol] = 'M';
+		return 0;
+	else if (userBoard[compPrevRow - count][col] == 'C' || userBoard[compPrevRow - count][col] == 'B' || userBoard[compPrevRow - count][col] == 'S' || userBoard[compPrevRow - count][col] == 'D' || userBoard[compPrevRow - count][col] == 'P') {
+	    	count += 1;
+		userBoard[compPrevRow - count][col] = 'H';
+	        return 1;
+	}
+
+
+	if (userBoard[compPrevRow][compPrevCol + count] == 'O') {
+		compOnTarget = 0;
+		count = 1;
+		userBoard[compPrevRowcount][compPrevCol + count] = 'M';
+		return 0;
+	else if (userBoard[compPrevRow][compPrevCol + count] == 'C' || userBoard[compPrevRow][compPrevCol + count] == 'B' || userBoard[compPrevRow][compPrevCol + count] == 'S' || userBoard[compPrevRow][compPrevCol + count] == 'D' || userBoard[compPrevRow][compPrevCol + count] == 'P') {
+	    	count += 1;
+		userBoard[compPrevRow][compPrevCol + count] = 'H';
+	        return 1;
+	}
+
+
+	if (userBoard[compPrevRow][compPrevCol - count] == 'O') {
+		compOnTarget = 0;
+		count = 1;
+		userBoard[compPrevRow][compPrevCol - count] = 'M';
+		return 0;
+	else if (userBoard[compPrevRow][compPrevCol - count] == 'C' || userBoard[compPrevRow][compPrevCol - count] == 'B' || userBoard[compPrevRow][compPrevCol - count] == 'S' || userBoard[compPrevRow][compPrevCol - count] == 'D' || userBoard[compPrevRow][compPrevCol - count] == 'P') {
+	    	count += 1;
+	        return 1;
+	}
+
+
+/*
     } else if (userBoard[compPrevRow - 1][compPrevCol ] == 'H') {
     	compNextRow == compPrevRow - 1;
     	compNextCol = comPrevCol;
@@ -261,6 +294,7 @@ int BattleshipGame::checkForAdjacentHits() {
     	compNextCol = comPrevCol - 1;
     	return 1;
     }
+*/
     return 0;
 }
 
