@@ -5,11 +5,14 @@
 #include "Ship.h"
 #include <iostream>
 #include <string>
+#include <ctime>
+#include <stdlib.h>
 using namespace std;
 
 BattleshipGame::BattleshipGame(int size) {
 	boardSize = size;
 	compOnTarget = 0;
+	shipSunk = 1;
 
 	vector<char> row; // create one vector for each row
 
@@ -226,24 +229,62 @@ int BattleshipGame::randcol() {
 }
 
 void BattleshipGame::computerPlay() {
-    int row = randrow(), col = randcol();
+	int compOnTarget = 1;
+	int row = randrow(), col = randcol();
 
 	while (compOnTarget) {
-		if (shipHit) {
-			checkforAdjacentHits();
-	    } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
-		cout << "Computer hit!" << endl;
-		computerShoot(row, col);
-		userBoard[row][col] = 'H';
-		compOnTarget = 1;
-		compPrevRow = row;
-		compPrevCol = col;
-		shipHit = 1;
-	    } else if (userBoard[row][col] == 'O') {
-		userBoard[row][col] = 'M';
-		cout << "Computer miss!" << endl;
-		compOnTarget = 0;
-	    }
+		if (!shipSunk) {
+			checkForAdjacentHits();
+			continue;
+		} else {
+			int row = randrow(), col = randcol();
+		}
+
+		if (userBoard[row][col] == 'C') {
+			cout << "Computer hit!" << endl;
+			userBoard[row][col] = 'H';
+			compOnTarget = 1;
+			compPrevRow = row;
+			compPrevCol = col;
+			shipSunk = 0;
+			carrier.hit();
+		} else if (userBoard[row][col] == 'B') {
+			cout << "Computer hit!" << endl;
+			userBoard[row][col] = 'H';
+			compOnTarget = 1;
+			compPrevRow = row;
+			compPrevCol = col;
+			shipSunk = 0;
+			battleship.hit();
+		} else if (userBoard[row][col] == 'S') {
+			cout << "Computer hit!" << endl;
+			userBoard[row][col] = 'H';
+			compOnTarget = 1;
+			compPrevRow = row;
+			compPrevCol = col;
+			shipSunk = 0;
+			submarine.hit();
+		} else if (userBoard[row][col] == 'D') {
+			cout << "Computer hit!" << endl;
+			userBoard[row][col] = 'H';
+			compOnTarget = 1;
+			compPrevRow = row;
+			compPrevCol = col;
+			shipSunk = 0;
+			destroyer.hit();
+		} else if (userBoard[row][col] == 'P') {
+			cout << "Computer hit!" << endl;
+			userBoard[row][col] = 'H';
+			compOnTarget = 1;
+			compPrevRow = row;
+			compPrevCol = col;
+			shipSunk = 0;
+			patrolboat.hit();
+		} else if (userBoard[row][col] == 'O') {
+			userBoard[row][col] = 'M';
+			cout << "Computer miss!" << endl;
+			compOnTarget = 0;
+		}
 	}
 
 }
@@ -251,72 +292,165 @@ void BattleshipGame::computerPlay() {
 int BattleshipGame::checkForAdjacentHits() {
 	int count = 1;
 
-	if (userBoard[compPrevRow + count][compPrevCol] == 'O') {
-		compOnTarget = 0;
-		count = 1;
-		userBoard[compPrevRow + count][compPrevCol] = 'M';
-		return 0;
-	else if (userBoard[compPrevRow + count][compPrevCol] == 'C' || userBoard[compPrevRow + count][compPrevCol] == 'B' || userBoard[compPrevRow + count][compPrevCol] == 'S' || userBoard[compPrevRow + count][compPrevCol] == 'D' || userBoard[compPrevRow + count][compPrevCol] == 'P') {
-		userBoard[compPrevRow + count][compPrevCol] = 'H';
-	    	count += 1;
-	        return 1;
+	if (compPrevRow + count <= 9) {
+		if (userBoard[compPrevRow + count][compPrevCol] == 'O') {
+			compOnTarget = 0;
+			count = 1;
+			userBoard[compPrevRow + count][compPrevCol] = 'M';
+			return 0;
+		} else if (userBoard[compPrevRow + count][compPrevCol] == 'C') {
+			userBoard[compPrevRow + count][compPrevCol] = 'H';
+		    	count += 1;
+			carrier.hit();
+			shipSunk = carrier.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow + count][compPrevCol] == 'B') {
+			userBoard[compPrevRow + count][compPrevCol] = 'H';
+		    	count += 1;
+			battleship.hit();
+			shipSunk = battleship.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow + count][compPrevCol] == 'S') {
+			userBoard[compPrevRow + count][compPrevCol] = 'H';
+		    	count += 1;
+			submarine.hit();
+			shipSunk = submarine.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow + count][compPrevCol] == 'D') {
+			userBoard[compPrevRow + count][compPrevCol] = 'H';
+		    	count += 1;
+			destroyer.hit();
+			shipSunk = destroyer.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow + count][compPrevCol] == 'P') {
+			userBoard[compPrevRow + count][compPrevCol] = 'H';
+		    	count += 1;
+			patrolboat.hit();
+			shipSunk = patrolboat.isSunk();
+			return 1;
+		}
 	}
 
-
-	if (userBoard[compPrevRow - count][compPrevCol] == 'O') {
-		compOnTarget = 0;
-		count = 1;
-		userBoard[compPrevRow - count][compPrevCol] = 'M';
-		return 0;
-	else if (userBoard[compPrevRow - count][col] == 'C' || userBoard[compPrevRow - count][col] == 'B' || userBoard[compPrevRow - count][col] == 'S' || userBoard[compPrevRow - count][col] == 'D' || userBoard[compPrevRow - count][col] == 'P') {
-	    	count += 1;
-		userBoard[compPrevRow - count][col] = 'H';
-	        return 1;
+	if (compPrevRow - count <= 9) {
+		if (userBoard[compPrevRow - count][compPrevCol] == 'O') {
+			compOnTarget = 0;
+			count = 1;
+			userBoard[compPrevRow - count][compPrevCol] = 'M';
+			return 0;
+		} else if (userBoard[compPrevRow - count][compPrevCol] == 'C') {
+			userBoard[compPrevRow - count][compPrevCol] = 'H';
+		    	count += 1;
+			carrier.hit();
+			shipSunk = carrier.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow + count][compPrevCol] == 'B') {
+			userBoard[compPrevRow + count][compPrevCol] = 'H';
+		    	count += 1;
+			battleship.hit();
+			shipSunk = battleship.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow - count][compPrevCol] == 'S') {
+			userBoard[compPrevRow - count][compPrevCol] = 'H';
+		    	count += 1;
+			submarine.hit();
+			shipSunk = submarine.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow - count][compPrevCol] == 'D') {
+			userBoard[compPrevRow - count][compPrevCol] = 'H';
+		    	count += 1;
+			destroyer.hit();
+			shipSunk = destroyer.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow - count][compPrevCol] == 'P') {
+			userBoard[compPrevRow - count][compPrevCol] = 'H';
+		    	count += 1;
+			patrolboat.hit();
+			shipSunk = patrolboat.isSunk();
+			return 1;
+		}
 	}
 
-
-	if (userBoard[compPrevRow][compPrevCol + count] == 'O') {
-		compOnTarget = 0;
-		count = 1;
-		userBoard[compPrevRowcount][compPrevCol + count] = 'M';
-		return 0;
-	else if (userBoard[compPrevRow][compPrevCol + count] == 'C' || userBoard[compPrevRow][compPrevCol + count] == 'B' || userBoard[compPrevRow][compPrevCol + count] == 'S' || userBoard[compPrevRow][compPrevCol + count] == 'D' || userBoard[compPrevRow][compPrevCol + count] == 'P') {
-	    	count += 1;
-		userBoard[compPrevRow][compPrevCol + count] = 'H';
-	        return 1;
+	if (compPrevCol + count <= 9) {
+		if (userBoard[compPrevRow][compPrevCol + count] == 'O') {
+			compOnTarget = 0;
+			count = 1;
+			userBoard[compPrevRow][compPrevCol + count] = 'M';
+			return 0;
+		} else if (userBoard[compPrevRow][compPrevCol + count] == 'C') {
+			userBoard[compPrevRow][compPrevCol + count] = 'H';
+		    	count += 1;
+			carrier.hit();
+			shipSunk = carrier.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol + count] == 'B') {
+			userBoard[compPrevRow][compPrevCol + count] = 'H';
+		    	count += 1;
+			battleship.hit();
+			shipSunk = battleship.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol + count] == 'S') {
+			userBoard[compPrevRow][compPrevCol + count] = 'H';
+		    	count += 1;
+			submarine.hit();
+			shipSunk = submarine.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol + count] == 'D') {
+			userBoard[compPrevRow][compPrevCol + count] = 'H';
+		    	count += 1;
+			destroyer.hit();
+			shipSunk = destroyer.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol + count] == 'P') {
+			userBoard[compPrevRow][compPrevCol + count] = 'H';
+		    	count += 1;
+			patrolboat.hit();
+			shipSunk = patrolboat.isSunk();
+			return 1;
+		}
 	}
 
-
-	if (userBoard[compPrevRow][compPrevCol - count] == 'O') {
-		compOnTarget = 0;
-		count = 1;
-		userBoard[compPrevRow][compPrevCol - count] = 'M';
-		return 0;
-	else if (userBoard[compPrevRow][compPrevCol - count] == 'C' || userBoard[compPrevRow][compPrevCol - count] == 'B' || userBoard[compPrevRow][compPrevCol - count] == 'S' || userBoard[compPrevRow][compPrevCol - count] == 'D' || userBoard[compPrevRow][compPrevCol - count] == 'P') {
-	    	count += 1;
-	        return 1;
+	if (compPrevCol - count <= 9) {
+		if (userBoard[compPrevRow][compPrevCol - count] == 'O') {
+			compOnTarget = 0;
+			count = 1;
+			userBoard[compPrevRow][compPrevCol - count] = 'M';
+			return 0;
+		} else if (userBoard[compPrevRow][compPrevCol - count] == 'C') {
+			userBoard[compPrevRow][compPrevCol - count] = 'H';
+		    	count += 1;
+			carrier.hit();
+			shipSunk = carrier.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol - count] == 'B') {
+			userBoard[compPrevRow][compPrevCol - count] = 'H';
+		    	count += 1;
+			battleship.hit();
+			shipSunk = battleship.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol - count] == 'S') {
+			userBoard[compPrevRow][compPrevCol - count] = 'H';
+		    	count += 1;
+			submarine.hit();
+			shipSunk = submarine.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol - count] == 'D') {
+			userBoard[compPrevRow][compPrevCol - count] = 'H';
+		    	count += 1;
+			destroyer.hit();
+			shipSunk = destroyer.isSunk();
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol - count] == 'P') {
+			userBoard[compPrevRow][compPrevCol - count] = 'H';
+		    	count += 1;
+			patrolboat.hit();
+			shipSunk = patrolboat.isSunk();
+			return 1;
+		}
 	}
-
-
-/*
-    } else if (userBoard[compPrevRow - 1][compPrevCol ] == 'H') {
-    	compNextRow == compPrevRow - 1;
-    	compNextCol = comPrevCol;
-    	return 1;
-    } else if (userBoard[compPrevRow][compPrevCol + 1] == 'H') {
-    	compNextRow == compPrevRow;
-    	compNextCol = comPrevCol + 1;
-    	return 1;
-    } else if (userBoard[compPrevRow][compPrevCol - 1] == 'H') {
-    	compNextRow == compPrevRow;
-    	compNextCol = comPrevCol - 1;
-    	return 1;
-    }
-*/
     return 0;
 }
 
-void BattleshipGame::userplaceship(Ship s, int row, int col, int vertical){
+void BattleshipGame::userplaceship (Ship s, int row, int col, int vertical){
 	if(s.getName() == "Carrier"){
 		if (vertical){
 			userBoard[row][col] = 'C';

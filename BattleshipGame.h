@@ -35,6 +35,7 @@ class BattleshipGame {
 	void computerPlay();
 	int checkForAdjacentHits();
 	int game();
+	int isSunk(Ship s);
 
 	private:
 	int boardSize;
@@ -49,7 +50,7 @@ class BattleshipGame {
     int compNextCol;
     int initialRow;
     int initialCol;
-	int shipHit;
+	int shipSunk;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;
 	Carrier carrier;
