@@ -49,6 +49,7 @@ class BattleshipGame {
     int compNextCol;
     int initialRow;
     int initialCol;
+	int shipHit;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;
 	Carrier carrier;

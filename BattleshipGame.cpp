@@ -209,45 +209,92 @@ int BattleshipGame::randcol() {
 
 void BattleshipGame::computerPlay() {
     int row = randrow(), col = randcol();
-	if (compOnTarget) {
-		if (checkForAdjacentHits() == 1) {
-			userBoard[compNextRow][compNextCol];
-			compPrevCol = compNextCol;
-			compPrevRow = compNextRow;
-		}
-    } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
-        cout << "Computer hit!" << endl;
-        userBoard[row][col] = 'H';
-        compOnTarget = 1;
-        initialRow = row;
-        initialCol = col;
-        compPrevRow = row;
-        compPrevCol = col;
-    } else if (userBoard[row][col] == 'O') {
-        userBoard[row][col] = 'M';
-        compOnTarget = 0;
-        cout << "Computer miss!" << endl;
-    }
+
+	while (compOnTarget) {
+		if (shipHit) {
+			checkforAdjacentHits();
+	    } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
+		cout << "Computer hit!" << endl;
+		computerShoot(row, col);
+		userBoard[row][col] = 'H';
+		compOnTarget = 1;
+		compPrevRow = row;
+		compPrevCol = col;
+		shipHit = 1;
+	    } else if (userBoard[row][col] == 'O') {
+		userBoard[row][col] = 'M';
+		cout << "Computer miss!" << endl;
+		compOnTarget = 0;
+	    }
+	}
+
 }
 
 int BattleshipGame::checkForAdjacentHits() {
-    if (userBoard[compPrevRow + 1][compPrevCol] == 'H') {
-    	compNextRow = compPrevRow + 1;
-    	compNextCol = compPrevCol;
-        return 1;
+	int count = 1;
+
+	if (userBoard[compPrevRow + count][compPrevCol] == 'O') {
+		compOnTarget = 0;
+		count = 1;
+		userBoard[compPrevRow + count][compPrevCol] = 'M';
+		return 0;
+	else if (userBoard[compPrevRow + count][compPrevCol] == 'C' || userBoard[compPrevRow + count][compPrevCol] == 'B' || userBoard[compPrevRow + count][compPrevCol] == 'S' || userBoard[compPrevRow + count][compPrevCol] == 'D' || userBoard[compPrevRow + count][compPrevCol] == 'P') {
+		userBoard[compPrevRow + count][compPrevCol] = 'H';
+	    	count += 1;
+	        return 1;
+	}
+
+
+	if (userBoard[compPrevRow - count][compPrevCol] == 'O') {
+		compOnTarget = 0;
+		count = 1;
+		userBoard[compPrevRow - count][compPrevCol] = 'M';
+		return 0;
+	else if (userBoard[compPrevRow - count][col] == 'C' || userBoard[compPrevRow - count][col] == 'B' || userBoard[compPrevRow - count][col] == 'S' || userBoard[compPrevRow - count][col] == 'D' || userBoard[compPrevRow - count][col] == 'P') {
+	    	count += 1;
+		userBoard[compPrevRow - count][col] = 'H';
+	        return 1;
+	}
+
+
+	if (userBoard[compPrevRow][compPrevCol + count] == 'O') {
+		compOnTarget = 0;
+		count = 1;
+		userBoard[compPrevRowcount][compPrevCol + count] = 'M';
+		return 0;
+	else if (userBoard[compPrevRow][compPrevCol + count] == 'C' || userBoard[compPrevRow][compPrevCol + count] == 'B' || userBoard[compPrevRow][compPrevCol + count] == 'S' || userBoard[compPrevRow][compPrevCol + count] == 'D' || userBoard[compPrevRow][compPrevCol + count] == 'P') {
+	    	count += 1;
+		userBoard[compPrevRow][compPrevCol + count] = 'H';
+	        return 1;
+	}
+
+
+	if (userBoard[compPrevRow][compPrevCol - count] == 'O') {
+		compOnTarget = 0;
+		count = 1;
+		userBoard[compPrevRow][compPrevCol - count] = 'M';
+		return 0;
+	else if (userBoard[compPrevRow][compPrevCol - count] == 'C' || userBoard[compPrevRow][compPrevCol - count] == 'B' || userBoard[compPrevRow][compPrevCol - count] == 'S' || userBoard[compPrevRow][compPrevCol - count] == 'D' || userBoard[compPrevRow][compPrevCol - count] == 'P') {
+	    	count += 1;
+	        return 1;
+	}
+
+
+/*
     } else if (userBoard[compPrevRow - 1][compPrevCol ] == 'H') {
-    	compNextRow = compPrevRow - 1;
-    	compNextCol = compPrevCol;
+    	compNextRow == compPrevRow - 1;
+    	compNextCol = comPrevCol;
     	return 1;
     } else if (userBoard[compPrevRow][compPrevCol + 1] == 'H') {
-    	compNextRow = compPrevRow;
-    	compNextCol = compPrevCol + 1;
+    	compNextRow == compPrevRow;
+    	compNextCol = comPrevCol + 1;
     	return 1;
     } else if (userBoard[compPrevRow][compPrevCol - 1] == 'H') {
-    	compNextRow = compPrevRow;
-    	compNextCol = compPrevCol - 1;
+    	compNextRow == compPrevRow;
+    	compNextCol = comPrevCol - 1;
     	return 1;
     }
+*/
     return 0;
 }
 
@@ -388,14 +435,5 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 	}
 	else{
 		cout << "Improper ship name" << endl;
-	}
-}
-
-int BattleshipGame::isSunk(Ship s){
-	if(s.isSunk()){
-		return 1;
-	}
-	else{
-		return 0;
 	}
 }
