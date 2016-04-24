@@ -3,8 +3,7 @@
 
 #include "Carrier.h"
 
-Carrier::Carrier() : Ship("Carrier", 1){
-	length = 5;
+Carrier::Carrier() : Ship("Carrier", 1, 5, 0){
 }
 
 int Carrier::getLength(){

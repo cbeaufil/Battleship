@@ -212,12 +212,11 @@ void BattleshipGame::computerPlay() {
 	if (compOnTarget) {
 		if (checkForAdjacentHits() == 1) {
 			userBoard[compNextRow][compNextCol];
-			compPrevCol == compNextCol;
-			compPrevRow == compNextRow;
+			compPrevCol = compNextCol;
+			compPrevRow = compNextRow;
 		}
     } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
         cout << "Computer hit!" << endl;
-        computerShoot(row, col);
         userBoard[row][col] = 'H';
         compOnTarget = 1;
         initialRow = row;
@@ -233,20 +232,20 @@ void BattleshipGame::computerPlay() {
 
 int BattleshipGame::checkForAdjacentHits() {
     if (userBoard[compPrevRow + 1][compPrevCol] == 'H') {
-    	compNextRow == compPrevRow + 1;
-    	compNextCol = comPrevCol;
+    	compNextRow = compPrevRow + 1;
+    	compNextCol = compPrevCol;
         return 1;
     } else if (userBoard[compPrevRow - 1][compPrevCol ] == 'H') {
-    	compNextRow == compPrevRow - 1;
-    	compNextCol = comPrevCol;
+    	compNextRow = compPrevRow - 1;
+    	compNextCol = compPrevCol;
     	return 1;
     } else if (userBoard[compPrevRow][compPrevCol + 1] == 'H') {
-    	compNextRow == compPrevRow;
-    	compNextCol = comPrevCol + 1;
+    	compNextRow = compPrevRow;
+    	compNextCol = compPrevCol + 1;
     	return 1;
     } else if (userBoard[compPrevRow][compPrevCol - 1] == 'H') {
-    	compNextRow == compPrevRow;
-    	compNextCol = comPrevCol - 1;
+    	compNextRow = compPrevRow;
+    	compNextCol = compPrevCol - 1;
     	return 1;
     }
     return 0;
@@ -389,5 +388,14 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 	}
 	else{
 		cout << "Improper ship name" << endl;
+	}
+}
+
+int BattleshipGame::isSunk(Ship s){
+	if(s.isSunk()){
+		return 1;
+	}
+	else{
+		return 0;
 	}
 }
