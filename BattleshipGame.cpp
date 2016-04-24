@@ -262,9 +262,13 @@ void BattleshipGame::computerPlay() {
 				if (up == 0) {
 					direction += 1;
 				}
+			} else {
+				direction += 1;
 			}
 			continue;
-		} 
+		} else {
+			count = 1;
+		}
 
 		
 		if (userBoard[row][col] == 'C') {
@@ -311,11 +315,12 @@ void BattleshipGame::computerPlay() {
 			userBoard[row][col] = 'M';
 			cout << "Computer miss!" << endl;
 			compOnTarget = 0;
-		} else if (userBoard[row][col] == 'H') {
+		} else if (userBoard[row][col] == 'H' || userBoard[row][col] == 'M') {
 			row = randrow();
 			col = randcol();
 			compOnTarget = 1;
 		}
+	cout << "something";
 	} while(compOnTarget);
 
 }
@@ -466,6 +471,7 @@ int BattleshipGame::checkUp() {
 
 int BattleshipGame::checkDown() {
 	if (compPrevRow + count <= 9 && !shipSunk) {
+		cout << "shot down";
 		if (userBoard[compPrevRow + count][compPrevCol] == 'O' && userBoard[compPrevRow + count][compPrevCol] != 'M') {
 			compOnTarget = 0;
 			userBoard[compPrevRow + count][compPrevCol] = 'M';
