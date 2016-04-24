@@ -209,23 +209,25 @@ int BattleshipGame::randcol() {
 
 void BattleshipGame::computerPlay() {
     int row = randrow(), col = randcol();
-	if (compOnTarget) {
-		if (checkForAdjacentHits() == 1) {
-			computerShoot(compNextRow, compNextCol);
-			compPrevCol == compNextCol;
-			compPrevRow == compNextRow;
-		}
-    } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
-        cout << "Computer hit!" << endl;
-        computerShoot(row, col);
-        userBoard[row][col] = 'H';
-        compOnTarget = 1;
-        compPrevRow = row;
-        compPrevCol = col;
-    } else if (userBoard[row][col] == 'O') {
-        userBoard[row][col] = 'M';
-        cout << "Computer miss!" << endl;
-    }
+	while (compOnTarget) {
+		if (compOnTarget) {
+			if (checkForAdjacentHits() == 1) {
+				compPrevCol == compNextCol;
+				compPrevRow == compNextRow;
+			}
+	    } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
+		cout << "Computer hit!" << endl;
+		computerShoot(row, col);
+		userBoard[row][col] = 'H';
+		compOnTarget = 1;
+		compPrevRow = row;
+		compPrevCol = col;
+	    } else if (userBoard[row][col] == 'O') {
+		userBoard[row][col] = 'M';
+		cout << "Computer miss!" << endl;
+		compOnTarget = 0;
+	    }
+	}
 }
 
 void computerShoot(int row, int col) {
@@ -233,10 +235,19 @@ void computerShoot(int row, int col) {
 }
 
 int BattleshipGame::checkForAdjacentHits() {
-    if (userBoard[compPrevRow + 1][compPrevCol] == 'H') {
-    	compNextRow == compPrevRow + 1;
-    	compNextCol = comPrevCol;
-        return 1;
+	int count = 1;
+
+	if (userBoard[compPrevRow + count][compPrevCol] == 'O') {
+		compOnTarget = 0;
+		count = 1;
+		userBoard[compPrevRow + count][compPrevCol] = 'M';
+		return 0;
+	else if (userBoard[compPrevRow + count][col] == 'C' || userBoard[compPrevRow + count][col] == 'B' || userBoard[compPrevRow + count][col] == 'S' || userBoard[compPrevRow + count][col] == 'D' || userBoard[compPrevRow + count][col] == 'P') {
+	    	count += 1;
+	        return 1;
+	}
+
+
     } else if (userBoard[compPrevRow - 1][compPrevCol ] == 'H') {
     	compNextRow == compPrevRow - 1;
     	compNextCol = comPrevCol;
