@@ -67,11 +67,10 @@ char BattleshipGame::getComputer(int row, int col){
 
 void BattleshipGame::play() {
 	char letterChoice;
-	int game = 1;
 
 	// placeships();
 
-	while (game) {
+	while (game()) {
 		// Player Turn
 		do {
 			cout << "Choose a letter to select a spot to send in a missile: ";
@@ -105,6 +104,25 @@ void BattleshipGame::play() {
 	 	displayUser();
 	}
 
+}
+
+int BattleshipGame::game() {
+	for (int i=0; i < boardSize; i++) {
+		for (int j=0; j < boardSize; j++) {
+			if (userBoard[i][j] != 'M' || userBoard[i][j] != 'H' || userBoard[i][j] != 'O') {
+				return 1;
+			} else {
+				cout << "The computer player has won!" << endl;
+				return 0;
+			}
+			if (computerBoard[i][j] != 'M' || computerBoard[i][j] != 'H' || computerBoard[i][j] != 'O') {
+				return 1;
+			} else {
+				cout << "Congrats! You won!" << endl;
+				return 0;
+			}
+		}
+	}
 }
 
 int BattleshipGame::checkValid(int spotA, int spotB) {
