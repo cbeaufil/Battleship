@@ -190,13 +190,12 @@ void BattleshipGame::placeUserShips(){
 }
 
 void BattleshipGame::placeComputerShips() {
-	int play = 1;
 	int vertical = rand() % 2;
 
 	computerplaceship(carrier, randrow(), randcol(), vertical);
-	computerplaceship(battleship, randrow(), randcol(), vertical);
+	computerplaceship(battleship, randrow(), randcol(), vertical - 1);
 	computerplaceship(submarine, randrow(), randcol(), vertical);
-	computerplaceship(destroyer, randrow(), randcol(), vertical);
+	computerplaceship(destroyer, randrow(), randcol(), vertical - 1);
 	computerplaceship(patrolboat, randrow(), randcol(), vertical);
 }
 
@@ -211,22 +210,44 @@ int BattleshipGame::randcol() {
 void BattleshipGame::computerPlay() {
     int row = randrow(), col = randcol();
 	if (compOnTarget) {
-		checkForAdjacentHits();
+		if (checkForAdjacentHits() == 1) {
+			userBoard[compNextRow][compNextCol];
+			compPrevCol == compNextCol;
+			compPrevRow == compNextRow;
+		}
     } else if (userBoard[row][col] == 'C' || userBoard[row][col] == 'B' || userBoard[row][col] == 'S' || userBoard[row][col] == 'D' || userBoard[row][col] == 'P') {
         cout << "Computer hit!" << endl;
+        computerShoot(row, col);
         userBoard[row][col] = 'H';
         compOnTarget = 1;
+        initialRow = row;
+        initialCol = col;
         compPrevRow = row;
         compPrevCol = col;
     } else if (userBoard[row][col] == 'O') {
         userBoard[row][col] = 'M';
+        compOnTarget = 0;
         cout << "Computer miss!" << endl;
     }
 }
 
 int BattleshipGame::checkForAdjacentHits() {
     if (userBoard[compPrevRow + 1][compPrevCol] == 'H') {
+    	compNextRow == compPrevRow + 1;
+    	compNextCol = comPrevCol;
         return 1;
+    } else if (userBoard[compPrevRow - 1][compPrevCol ] == 'H') {
+    	compNextRow == compPrevRow - 1;
+    	compNextCol = comPrevCol;
+    	return 1;
+    } else if (userBoard[compPrevRow][compPrevCol + 1] == 'H') {
+    	compNextRow == compPrevRow;
+    	compNextCol = comPrevCol + 1;
+    	return 1;
+    } else if (userBoard[compPrevRow][compPrevCol - 1] == 'H') {
+    	compNextRow == compPrevRow;
+    	compNextCol = comPrevCol - 1;
+    	return 1;
     }
     return 0;
 }
