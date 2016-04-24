@@ -44,6 +44,8 @@ class BattleshipGame {
     int compPrevCol;
     int compOnTarget;   // Was last shot a hit?
     int compPrevHit;
+    int compNextRow;
+    int compNextCol;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;
 	Carrier carrier;
