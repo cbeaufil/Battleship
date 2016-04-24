@@ -33,7 +33,10 @@ class BattleshipGame {
     int randcol();
     void placeComputerShips();
 	void computerPlay();
-	int checkForAdjacentHits();
+	int checkLeft();
+	int checkRight();
+	int checkDown();
+	int checkUp();
 	int game();
 	int isSunk(Ship s);
 
@@ -51,6 +54,8 @@ class BattleshipGame {
     int initialRow;
     int initialCol;
 	int shipSunk;
+	int count;
+	int direction;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;
 	Carrier carrier;
