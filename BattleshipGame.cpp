@@ -220,10 +220,13 @@ void BattleshipGame::computerPlay() {
         computerShoot(row, col);
         userBoard[row][col] = 'H';
         compOnTarget = 1;
+        initialRow = row;
+        initialCol = col;
         compPrevRow = row;
         compPrevCol = col;
     } else if (userBoard[row][col] == 'O') {
         userBoard[row][col] = 'M';
+        compOnTarget = 0;
         cout << "Computer miss!" << endl;
     }
 }
