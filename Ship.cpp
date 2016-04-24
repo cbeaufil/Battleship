@@ -3,11 +3,9 @@
 
 #include "Ship.h"
 
-Ship::Ship(string nameIN, int verticalIN, int lengthIN, int hitsIN){
+Ship::Ship(string nameIN, int verticalIN){
 	vertical = verticalIN;
 	name = nameIN;
-	length = lengthIN;
-	hits = hitsIN;
 }
 
 void Ship::setOrientation(int verticalIn){
@@ -24,17 +22,4 @@ void Ship::setName(string in){
 
 string Ship::getName(){
 	return name;
-}
-
-int Ship::isSunk(){
-	if(hits >= length){
-		return 1;
-	}
-	else{
-		return 0;
-	}
-}
-
-void Ship::hit(){
-	hits++;
 }

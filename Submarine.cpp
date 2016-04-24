@@ -3,7 +3,8 @@
 
 #include "Submarine.h"
 
-Submarine::Submarine() : Ship("Submarine", 1, 3, 0){
+Submarine::Submarine() : Ship("Submarine", 1){
+	length = 5;
 }
 
 int Submarine::getLength(){

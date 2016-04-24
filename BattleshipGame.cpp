@@ -95,7 +95,6 @@ void BattleshipGame::play() {
 			cout << "You missed!" << endl;
 		}
 
-		isSunk(carrier);
 		computerPlay();
 
 		// AI Turn
@@ -300,16 +299,6 @@ void BattleshipGame::userplaceship(Ship s, int row, int col, int vertical){
 	else{
 		cout << "Improper ship name" << endl;
 	}
-}
-
-int BattleshipGame::isSunk(Ship s){
-	if(s.isSunk()){
-		return 1;
-	}
-	else{
-		return 0;
-	}
-	cout << s.getName() << " has been sunk!" << endl;
 }
 
 void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
