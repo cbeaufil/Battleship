@@ -8,7 +8,10 @@
 using namespace std;
 
 int main() {
+	srand(time(NULL));
+
 	BattleshipGame b;
 	b.placeUserShips();
+	b.placeComputerShips();
 	b.play();
 }
