@@ -14,6 +14,10 @@ void Ship::setOrientation(int verticalIn){
 	vertical = verticalIn;
 }
 
+int Ship::getLength() {
+	return length;
+}
+
 int Ship::getVertical(){
 	return vertical;
 }

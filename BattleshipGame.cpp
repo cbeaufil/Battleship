@@ -72,6 +72,7 @@ char BattleshipGame::getComputer(int row, int col){
 void BattleshipGame::play() {
 	char letterChoice;
 	int hit = 0;
+	int Valid = 0;
 
 
 	while (game()) {
@@ -84,9 +85,10 @@ void BattleshipGame::play() {
 				cout << "Choose a number to select a spot to send in a missile: ";
 				cin >> spotB;
 				spotB = spotB - 1;
-				if (checkValid(spotA, spotB)) {
+				Valid = checkValid(spotA, spotB);
+				if (Valid == 1) {
 					break;
-				}
+				}			
 			} while (1);
 
 			if (computerBoard[spotA][spotB] != 'O') {
@@ -153,20 +155,22 @@ void BattleshipGame::placeUserShips(){
 	cout << "Place Your Ships. Ships will be placed extending to the right of or downwards from your grid selection." << endl; 
 	int play = 1;
 	char letter;
-	int number, row, col, vertical;
+	int number, row, col, vertical, success;
 
 	displayUser();
-	cout << "Where would you like to place your Carrier?" << endl;
-	cout << "Letter: ";
-	cin >> letter;
-	row = toupper(letter) - 65;
-	cout << "Number: ";
-	cin >> number;
-	col = number - 1;
-	cout << "1 for Vertical, 0 for Horizontal: ";
-	cin >> vertical;
-	userplaceship(carrier, row, col, vertical);	
-	displayUser();
+	do {
+		cout << "Where would you like to place your Carrier?" << endl;
+		cout << "Letter: ";
+		cin >> letter;
+		row = toupper(letter) - 65;
+		cout << "Number: ";
+		cin >> number;
+		col = number - 1;
+		cout << "1 for Vertical, 0 for Horizontal: ";
+		cin >> vertical;
+		success = userplaceship(carrier, row, col, vertical);	
+		displayUser();
+	} while (!success);
 	cout << "Where would you like to place your Battleship?" << endl;
 	cout << "Letter: ";
 	cin >> letter;
@@ -516,14 +520,53 @@ int BattleshipGame::checkDown() {
     return 0;
 }
 
-void BattleshipGame::userplaceship (Ship s, int row, int col, int vertical){
+int BattleshipGame::placementValid (Ship s, int row, int col, int vertical) {
+	int length = s.getLength();
+	int alpha, digit;
+	char a, d;
+
+	a = '0' + row;
+	d = '0' + col;
+
+
+	//static_cast<char>(row);
+	//static_cast<char>(col);
+
+	alpha = isalpha(a);
+	digit = isdigit(d);
+	cout << "the row is " << alpha << " and the column is " << digit << " row is " << a << endl;
+
+
+	if (vertical) {
+		for (int i = 0; i < s.getLength(); i++) {
+			if (row + length > 10 || col > 9 || row < 0 || col < 0 || !isalpha(row) || !isdigit(col) || userBoard[row + i][col] != 'O') {
+				return 0;
+			}
+		}
+	} else {
+		for (int i = 0; i < s.getLength(); i++) {
+			if (row > 9 || col + length > 10 || row < 0 || col < 0 || !isalpha(row) || !isdigit(col) || userBoard[row][col + i] != 'O') {
+				return 0;
+			}
+		}
+	}
+	return 1;
+
+}
+
+int BattleshipGame::userplaceship (Ship s, int row, int col, int vertical){
 	if(s.getName() == "Carrier"){
 		if (vertical){
-			userBoard[row][col] = 'C';
-			userBoard[row+1][col] = 'C';
-			userBoard[row+2][col] = 'C';
-			userBoard[row+3][col] = 'C';
-			userBoard[row+4][col] = 'C';
+			if (placementValid(carrier, row, col, vertical)) {
+				userBoard[row][col] = 'C';
+				userBoard[row+1][col] = 'C';
+				userBoard[row+2][col] = 'C';
+				userBoard[row+3][col] = 'C';
+				userBoard[row+4][col] = 'C';
+			} else {
+				cout << "You cannot place a ship here. Try Again!" << endl;
+				return 0;
+			}
 		}
 		else{
 			userBoard[row][col] = 'C';
@@ -532,6 +575,7 @@ void BattleshipGame::userplaceship (Ship s, int row, int col, int vertical){
 			userBoard[row][col+3] = 'C';
 			userBoard[row][col+4] = 'C';
 		}
+		return 1;
 	}
 	else if(s.getName() == "Battleship"){
 		if (vertical){
@@ -587,17 +631,23 @@ void BattleshipGame::userplaceship (Ship s, int row, int col, int vertical){
 }
 
 void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
+	int counter;
+
 	if(s.getName() == "Carrier"){
 
 		if (vertical){
 			do {
+				counter = 0;
 				for (int i=0; i < 5; i++) {
 					if (computerBoard[row + i][col] != 'O' || row + 4 > 9) {
 						row = randrow();
-						continue;
+						col = randcol();
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'C';
 			computerBoard[row+1][col] = 'C';
@@ -607,13 +657,17 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 		}
 		else{
 			do {
+				counter = 0;
 				for (int i=0; i < 5; i++) {
 					if (computerBoard[row][col + i] != 'O' || col + 4 > 9) {
+						row = randrow();
 						col = randcol();
-						continue;
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'C';
 			computerBoard[row][col+1] = 'C';
@@ -625,13 +679,17 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 	else if(s.getName() == "Battleship"){
 		if (vertical){
 			do {
+				counter = 0;
 				for (int i=0; i < 4; i++) {
 					if (computerBoard[row + i][col] != 'O' || row + 3 > 9) {
 						row = randrow();
-						continue;
+						col = randcol();
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'B';
 			computerBoard[row+1][col] = 'B';
@@ -640,13 +698,17 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 		}
 		else{
 			do {
+				counter = 0;
 				for (int i=0; i < 4; i++) {
 					if (computerBoard[row][col + i] != 'O' || col + 3 > 9) {
+						row = randrow();
 						col = randcol();
-						continue;
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'B';
 			computerBoard[row][col+1] = 'B';
@@ -657,13 +719,17 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 	else if(s.getName() == "Submarine"){
 		if (vertical){
 			do {
+				counter = 0;
 				for (int i=0; i < 3; i++) {
 					if (computerBoard[row + i][col] != 'O' || row + 2 > 9) {
 						row = randrow();
-						continue;
+						col = randcol();
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'S';
 			computerBoard[row+1][col] = 'S';
@@ -671,13 +737,17 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 		}
 		else{
 			do {
+				counter = 0;
 				for (int i=0; i < 3; i++) {
 					if (computerBoard[row][col + i] != 'O' || col + 2 > 9) {
+						row = randrow();
 						col = randcol();
-						continue;
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'S';
 			computerBoard[row][col+1] = 'S';
@@ -687,13 +757,17 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 	else if(s.getName() == "Destroyer"){
 		if (vertical){
 			do {
+				counter = 0;
 				for (int i=0; i < 3; i++) {
 					if (computerBoard[row + i][col] != 'O' || row + 2 > 9) {
 						row = randrow();
-						continue;
+						col = randcol();
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'D';
 			computerBoard[row+1][col] = 'D';
@@ -701,13 +775,17 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 		}
 		else{
 			do {
+				counter = 0;
 				for (int i=0; i < 3; i++) {
 					if (computerBoard[row][col + i] != 'O' || col + 2 > 9) {
+						row = randrow();
 						col = randcol();
-						continue;
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'D';
 			computerBoard[row][col+1] = 'D';
@@ -717,26 +795,34 @@ void BattleshipGame::computerplaceship(Ship s, int row, int col, int vertical){
 	else if(s.getName() == "PatrolBoat"){
 		if (vertical){
 			do {
+				counter = 0;
 				for (int i=0; i < 2; i++) {
 					if (computerBoard[row + i][col] != 'O' || row + 1 > 9) {
 						row = randrow();
-						continue;
+						col = randcol();
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'P';
 			computerBoard[row+1][col] = 'P';
 		}
 		else{
 			do {
+				counter = 0;
 				for (int i=0; i < 2; i++) {
 					if (computerBoard[row][col + i] != 'O' || col + 1 > 9) {
+						row = randrow();
 						col = randcol();
-						continue;
+						counter++;
 					}
 				}
-				break;
+				if (counter == 0) {
+					break;
+				}
 			} while (1);
 			computerBoard[row][col] = 'P';
 			computerBoard[row][col+1] = 'P';

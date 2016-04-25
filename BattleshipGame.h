@@ -15,6 +15,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 using namespace std;
 
 class BattleshipGame {
@@ -23,7 +24,7 @@ class BattleshipGame {
 
 	public:
 	BattleshipGame(int size=10);
-	void userplaceship(Ship s, int, int, int);
+	int userplaceship(Ship s, int, int, int);
 	void computerplaceship(Ship s, int, int, int);
 	void play();
 	int checkValid(int, int);
@@ -42,6 +43,7 @@ class BattleshipGame {
 	int checkUp();
 	int game();
 	int isSunk(Ship s);
+	int placementValid(Ship s, int, int, int);
 
 	private:
 	int boardSize;
