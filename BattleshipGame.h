@@ -12,6 +12,9 @@
 #include "PatrolBoat.h"
 #include <iostream>
 #include <vector>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 using namespace std;
 
 class BattleshipGame {
