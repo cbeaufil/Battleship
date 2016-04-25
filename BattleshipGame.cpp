@@ -132,8 +132,6 @@ int BattleshipGame::game() {
 	int userValue = 0;
 	int computerValue = 0;
 
-//userBoard[i][j] != 'B' || userBoard[i][j] != 'P' || userBoard[i][j] != 'S' || userBoard[i][j] != 'D' || userBoard[i][j] != 'C'
-
 	for (int i=0; i < boardSize; i++) {
 		for (int j=0; j < boardSize; j++) {
 			if (userBoard[i][j] == 'B' || userBoard[i][j] == 'P' || userBoard[i][j] == 'S' || userBoard[i][j] == 'D' || userBoard[i][j] == 'C') {
