@@ -14,6 +14,7 @@ BattleshipGame::BattleshipGame(int size) {
 	shipSunk = 1;
 	count = 1;
 	direction = 1;
+	value = 1;
 
 	vector<char> row; // create one vector for each row
 
@@ -75,10 +76,14 @@ void BattleshipGame::play() {
 	int Valid = 0;
 
 
-	while (game()) {
+	while (value) {
 		// Player Turn
 		do {
 			do {
+				value = game();
+				if (!value) {
+					break;
+				}
 				cout << "Choose a letter to select a spot to send in a missile: ";
 				cin >> letterChoice;
 				spotA = toupper(letterChoice) - 65;
@@ -88,19 +93,23 @@ void BattleshipGame::play() {
 				Valid = checkValid(spotA, spotB);
 				if (Valid == 1) {
 					break;
-				}			
+				}
 			} while (1);
+			
+			if (!value) {
+				break;
+			}
 
 			if (computerBoard[spotA][spotB] != 'O') {
 				computerBoard[spotA][spotB] = 'H';
 				cout << "That's a hit!" << endl;
 				hit = 1;
-			}
-			else {
+			} else {
 				computerBoard[spotA][spotB] = 'M';
 				cout << "You missed!" << endl;
 				hit = 0;
 			}
+			value = game();
 		} while (hit);
 
 		computerPlay();
@@ -111,26 +120,38 @@ void BattleshipGame::play() {
 	 	displayUser();
 	}
 
+	if (userValue == 0) {
+		cout << "The computer player has won!" << endl;
+	} else if (computerValue == 0) {
+		cout << "Congrats! You won!" << endl;
+	}		
+
 }
 
 int BattleshipGame::game() {
+	int userValue = 0;
+	int computerValue = 0;
+
+//userBoard[i][j] != 'B' || userBoard[i][j] != 'P' || userBoard[i][j] != 'S' || userBoard[i][j] != 'D' || userBoard[i][j] != 'C'
+
 	for (int i=0; i < boardSize; i++) {
 		for (int j=0; j < boardSize; j++) {
-			if (userBoard[i][j] != 'M' || userBoard[i][j] != 'H' || userBoard[i][j] != 'O') {
-				return 1;
-			} else {
-				cout << "The computer player has won!" << endl;
-				return 0;
+			if (userBoard[i][j] == 'B' || userBoard[i][j] == 'P' || userBoard[i][j] == 'S' || userBoard[i][j] == 'D' || userBoard[i][j] == 'C') {
+				userValue++;
 			}
-			if (computerBoard[i][j] != 'M' || computerBoard[i][j] != 'H' || computerBoard[i][j] != 'O') {
-				return 1;
-			} else {
-				cout << "Congrats! You won!" << endl;
-				return 0;
+			if (computerBoard[i][j] == 'B' || computerBoard[i][j] == 'P' || computerBoard[i][j] == 'S' || computerBoard[i][j] == 'D' || computerBoard[i][j] == 'C') {
+				computerValue++;
 			}
 		}
 	}
-	return 1;
+
+	if (userValue == 0) {
+		return userValue;
+	} else if (computerValue == 0) {
+		return computerValue;
+	} else {
+		return 1;
+	}
 }
 
 int BattleshipGame::checkValid(int spotA, int spotB) {
@@ -143,7 +164,7 @@ int BattleshipGame::checkValid(int spotA, int spotB) {
 		cout << "You cannot shoot a missle here, try a new strategy!" << endl;
 		return 0;
 	}
-	else if (computerBoard[spotA][spotB] == 'M') {
+	else if (computerBoard[spotA][spotB] == 'M' || computerBoard[spotA][spotB] == 'H') {
 		cout << "You have already shot a missle here! Try a new strategy." << endl;
 		return 0;
 	}
@@ -171,50 +192,62 @@ void BattleshipGame::placeUserShips(){
 		success = userplaceship(carrier, row, col, vertical);	
 		displayUser();
 	} while (!success);
-	cout << "Where would you like to place your Battleship?" << endl;
-	cout << "Letter: ";
-	cin >> letter;
-	row = toupper(letter) - 65;
-	cout << "Number: ";
-	cin >> number;
-	col = number - 1;
-	cout << "1 for Vertical, 0 for Horizontal: ";
-	cin >> vertical;
-	userplaceship(battleship, row, col, vertical);
-	displayUser();
-	cout << "Where would you like to place your Submarine?" << endl;
-	cout << "Letter: ";
-	cin >> letter;
-	row = toupper(letter) - 65;
-	cout << "Number: ";
-	cin >> number;
-	col = number - 1;
-	cout << "1 for Vertical, 0 for Horizontal: ";
-	cin >> vertical;
-	userplaceship(submarine, row, col, vertical);
-	displayUser();
-	cout << "Where would you like to place your Destroyer?" << endl;
-	cout << "Letter: ";
-	cin >> letter;
-	row = toupper(letter) - 65;
-	cout << "Number: ";
-	cin >> number;
-	col = number - 1;
-	cout << "1 for Vertical, 0 for Horizontal: ";
-	cin >> vertical;
-	userplaceship(destroyer, row, col, vertical);
-	displayUser();
+	success = 0;
+	do {
+		cout << "Where would you like to place your Battleship?" << endl;
+		cout << "Letter: ";
+		cin >> letter;
+		row = toupper(letter) - 65;
+		cout << "Number: ";
+		cin >> number;
+		col = number - 1;
+		cout << "1 for Vertical, 0 for Horizontal: ";
+		cin >> vertical;
+		success = userplaceship(battleship, row, col, vertical);
+		displayUser();
+	} while (!success);
+	success = 0;
+	do {
+		cout << "Where would you like to place your Submarine?" << endl;
+		cout << "Letter: ";
+		cin >> letter;
+		row = toupper(letter) - 65;
+		cout << "Number: ";
+		cin >> number;
+		col = number - 1;
+		cout << "1 for Vertical, 0 for Horizontal: ";
+		cin >> vertical;
+		success = userplaceship(submarine, row, col, vertical);
+		displayUser();
+	} while (!success);
+	success = 0;
+	do {
+		cout << "Where would you like to place your Destroyer?" << endl;
+		cout << "Letter: ";
+		cin >> letter;
+		row = toupper(letter) - 65;
+		cout << "Number: ";
+		cin >> number;
+		col = number - 1;
+		cout << "1 for Vertical, 0 for Horizontal: ";
+		cin >> vertical;
+		success = userplaceship(destroyer, row, col, vertical);
+		displayUser();
+	} while (!success);
+	success = 0;
+	do {
 		cout << "Where would you like to place your Patrol Boat?" << endl;
-	cout << "Letter: ";
-	cin >> letter;
-	row = toupper(letter) - 65;
-	cout << "Number: ";
-	cin >> number;
-	col = number - 1;
-	cout << "1 for Vertical, 0 for Horizontal: ";
-	cin >> vertical;
-	userplaceship(patrolboat, row, col, vertical);
-	displayUser();
+		cout << "Letter: ";
+		cin >> letter;
+		row = toupper(letter) - 65;
+		cout << "Number: ";
+		cin >> number;
+		col = number - 1;
+		cout << "1 for Vertical, 0 for Horizontal: ";
+		cin >> vertical;
+		success = userplaceship(patrolboat, row, col, vertical);
+		displayUser();
+	} while (!success);
 }
 
 void BattleshipGame::placeComputerShips() {
@@ -240,6 +273,10 @@ void BattleshipGame::computerPlay() {
 	int left, right, down, up;
 
 	do {
+		value = game();
+		if (!value) {
+			break;
+		}
 		if (!shipSunk) {
 			compOnTarget = 1;
 			if (direction % 5 == 1) {
@@ -254,13 +291,11 @@ void BattleshipGame::computerPlay() {
 				}
 			} else if (direction % 5 == 3) {
 				down = checkDown();
-				cout << "down";
 				if (down == 0) {
 					direction += 1;
 				}
 			} else if (direction % 5 == 4) {
 				up = checkUp();
-				cout << "test";
 				if (up == 0) {
 					direction += 1;
 				}
@@ -322,7 +357,6 @@ void BattleshipGame::computerPlay() {
 			col = randcol();
 			compOnTarget = 1;
 		}
-	cout << "something";
 	} while(compOnTarget);
 
 }
@@ -333,7 +367,7 @@ int BattleshipGame::checkLeft() {
 			compOnTarget = 0;
 			userBoard[compPrevRow][compPrevCol - count] = 'M';
 			count = 1;
-			cout << "Computer miss! left" << endl;
+			cout << "Computer miss!" << endl;
 			return 0;
 		} else if (userBoard[compPrevRow][compPrevCol - count] == 'C') {
 			userBoard[compPrevRow][compPrevCol - count] = 'H';
@@ -381,7 +415,7 @@ int BattleshipGame::checkRight() {
 			compOnTarget = 0;
 			userBoard[compPrevRow][compPrevCol + count] = 'M';
 			count = 1;
-			cout << "Computer miss! right" << endl;
+			cout << "Computer miss!" << endl;
 			return 0;
 		} else if (userBoard[compPrevRow][compPrevCol + count] == 'C') {
 			userBoard[compPrevRow][compPrevCol + count] = 'H';
@@ -429,7 +463,7 @@ int BattleshipGame::checkUp() {
 			compOnTarget = 0;
 			userBoard[compPrevRow - count][compPrevCol] = 'M';
 			count = 1;
-			cout << "Computer miss! upwards" << endl;
+			cout << "Computer miss!" << endl;
 			return 0;
 		} else if (userBoard[compPrevRow - count][compPrevCol] == 'C') {
 			userBoard[compPrevRow - count][compPrevCol] = 'H';
@@ -473,12 +507,11 @@ int BattleshipGame::checkUp() {
 
 int BattleshipGame::checkDown() {
 	if (compPrevRow + count <= 9 && !shipSunk) {
-		cout << "shot down";
 		if (userBoard[compPrevRow + count][compPrevCol] == 'O' && userBoard[compPrevRow + count][compPrevCol] != 'M') {
 			compOnTarget = 0;
 			userBoard[compPrevRow + count][compPrevCol] = 'M';
 			count = 1;
-			cout << "Computer miss! downwards" << endl;
+			cout << "Computer miss!" << endl;
 			return 0;
 		} else if (userBoard[compPrevRow + count][compPrevCol] == 'C') {
 			userBoard[compPrevRow + count][compPrevCol] = 'H';
@@ -525,27 +558,24 @@ int BattleshipGame::placementValid (Ship s, int row, int col, int vertical) {
 	int alpha, digit;
 	char a, d;
 
-	a = '0' + row;
+	//a = row;
 	d = '0' + col;
 
-
-	//static_cast<char>(row);
-	//static_cast<char>(col);
-
-	alpha = isalpha(a);
-	digit = isdigit(d);
-	cout << "the row is " << alpha << " and the column is " << digit << " row is " << a << endl;
-
+	//alpha = isalpha(a);
+	//cout << "the row is " << alpha << " and the column is " << digit << " row is " << col << endl;
+	if (!isdigit(d)) {
+		return 0;
+	}
 
 	if (vertical) {
 		for (int i = 0; i < s.getLength(); i++) {
-			if (row + length > 10 || col > 9 || row < 0 || col < 0 || !isalpha(row) || !isdigit(col) || userBoard[row + i][col] != 'O') {
+			if (row + length > 10 || col > 9 || row < 0 || col < 0 ||  userBoard[row + i][col] != 'O') {
 				return 0;
 			}
 		}
 	} else {
 		for (int i = 0; i < s.getLength(); i++) {
-			if (row > 9 || col + length > 10 || row < 0 || col < 0 || !isalpha(row) || !isdigit(col) || userBoard[row][col + i] != 'O') {
+			if (row > 9 || col + length > 10 || row < 0 || col < 0 ||  userBoard[row][col + i] != 'O') {
 				return 0;
 			}
 		}
@@ -556,73 +586,96 @@ int BattleshipGame::placementValid (Ship s, int row, int col, int vertical) {
 
 int BattleshipGame::userplaceship (Ship s, int row, int col, int vertical){
 	if(s.getName() == "Carrier"){
-		if (vertical){
-			if (placementValid(carrier, row, col, vertical)) {
-				userBoard[row][col] = 'C';
-				userBoard[row+1][col] = 'C';
-				userBoard[row+2][col] = 'C';
-				userBoard[row+3][col] = 'C';
-				userBoard[row+4][col] = 'C';
-			} else {
-				cout << "You cannot place a ship here. Try Again!" << endl;
-				return 0;
+		if (placementValid(carrier, row, col, vertical)) {
+			if (vertical){
+					userBoard[row][col] = 'C';
+					userBoard[row+1][col] = 'C';
+					userBoard[row+2][col] = 'C';
+					userBoard[row+3][col] = 'C';
+					userBoard[row+4][col] = 'C';
+
+			} else{
+					userBoard[row][col] = 'C';
+					userBoard[row][col+1] = 'C';
+					userBoard[row][col+2] = 'C';
+					userBoard[row][col+3] = 'C';
+					userBoard[row][col+4] = 'C';
 			}
+			return 1;
+		} else {
+			cout << "You cannot place a ship here. Try Again!" << endl;
+			return 0;
 		}
-		else{
-			userBoard[row][col] = 'C';
-			userBoard[row][col+1] = 'C';
-			userBoard[row][col+2] = 'C';
-			userBoard[row][col+3] = 'C';
-			userBoard[row][col+4] = 'C';
-		}
-		return 1;
 	}
 	else if(s.getName() == "Battleship"){
-		if (vertical){
-			userBoard[row][col] = 'B';
-			userBoard[row+1][col] = 'B';
-			userBoard[row+2][col] = 'B';
-			userBoard[row+3][col] = 'B';
-		}
-		else{
-			userBoard[row][col] = 'B';
-			userBoard[row][col+1] = 'B';
-			userBoard[row][col+2] = 'B';
-			userBoard[row][col+3] = 'B';
+		if (placementValid(battleship, row, col, vertical)) {
+			if (vertical){
+					userBoard[row][col] = 'B';
+					userBoard[row+1][col] = 'B';
+					userBoard[row+2][col] = 'B';
+					userBoard[row+3][col] = 'B';
+
+			} else{
+					userBoard[row][col] = 'B';
+					userBoard[row][col+1] = 'B';
+					userBoard[row][col+2] = 'B';
+					userBoard[row][col+3] = 'B';
+			}
+			return 1;
+		} else {
+			cout << "You cannot place a ship here. Try Again!" << endl;
+			return 0;
 		}
 	}
 	else if(s.getName() == "Submarine"){
-		if (vertical){
-			userBoard[row][col] = 'S';
-			userBoard[row+1][col] = 'S';
-			userBoard[row+2][col] = 'S';
-		}
-		else{
-			userBoard[row][col] = 'S';
-			userBoard[row][col+1] = 'S';
-			userBoard[row][col+2] = 'S';
+		if (placementValid(submarine, row, col, vertical)) {
+			if (vertical){
+					userBoard[row][col] = 'S';
+					userBoard[row+1][col] = 'S';
+					userBoard[row+2][col] = 'S';
+			} else{
+					userBoard[row][col] = 'S';
+					userBoard[row][col+1] = 'S';
+					userBoard[row][col+2] = 'S';
+
+			}
+			return 1;
+		} else {
+			cout << "You cannot place a ship here. Try Again!" << endl;
+			return 0;
 		}
 	}
 	else if(s.getName() == "Destroyer"){
-		if (vertical){
-			userBoard[row][col] = 'D';
-			userBoard[row+1][col] = 'D';
-			userBoard[row+2][col] = 'D';
-		}
-		else{
-			userBoard[row][col] = 'D';
-			userBoard[row][col+1] = 'D';
-			userBoard[row][col+2] = 'D';
+		if (placementValid(destroyer, row, col, vertical)) {
+			if (vertical){
+				userBoard[row][col] = 'D';
+				userBoard[row+1][col] = 'D';
+				userBoard[row+2][col] = 'D';
+
+			} else{
+				userBoard[row][col] = 'D';
+				userBoard[row][col+1] = 'D';
+				userBoard[row][col+2] = 'D';
+			}
+			return 1;
+		} else {
+			cout << "You cannot place a ship here. Try Again!" << endl;
+			return 0;
 		}
 	}
 	else if(s.getName() == "PatrolBoat"){
-		if (vertical){
-			userBoard[row][col] = 'P';
-			userBoard[row+1][col] = 'P';
-		}
-		else{
-			userBoard[row][col] = 'P';
-			userBoard[row][col+1] = 'P';
+		if (placementValid(patrolboat, row, col, vertical)) {
+			if (vertical){
+				userBoard[row][col] = 'P';
+				userBoard[row+1][col] = 'P';
+			} else{
+				userBoard[row][col] = 'P';
+				userBoard[row][col+1] = 'P';
+			}
+			return 1;
+		} else {
+			cout << "You cannot place a ship here. Try Again!" << endl;
+			return 0;
 		}
 	}
 	else{

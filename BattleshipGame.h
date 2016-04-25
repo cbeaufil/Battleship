@@ -61,6 +61,9 @@ class BattleshipGame {
 	int shipSunk;
 	int count;
 	int direction;
+	int value;
+	int userValue;
+	int computerValue;
 	vector< vector<char> > userBoard;
 	vector< vector<char> > computerBoard;
 	Carrier carrier;
