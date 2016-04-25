@@ -9,7 +9,7 @@ and may not be redistributed without written permission.*/
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 1000;
-const int SCREEN_HEIGHT = 500;
+const int SCREEN_HEIGHT = 700;
 
 //Starts up SDL and creates window
 bool init();
@@ -92,7 +92,7 @@ bool loadMedia()
 	bool success = true;
 
 	//Load texture
-	gTexture = loadTexture( "../images/board.bmp" );
+	gTexture = loadTexture( "board.png" );
 	if( gTexture == NULL )
 	{
 		printf( "Failed to load texture image!\n" );
@@ -191,7 +191,7 @@ int main( int argc, char* args[] )
 				topLeftViewport.x = 0;
 				topLeftViewport.y = 0;
 				topLeftViewport.w = SCREEN_WIDTH / 2;
-				topLeftViewport.h = SCREEN_HEIGHT;
+				topLeftViewport.h = SCREEN_HEIGHT - 200;
 				SDL_RenderSetViewport( gRenderer, &topLeftViewport );
 				
 				//Render texture to screen
@@ -203,7 +203,7 @@ int main( int argc, char* args[] )
 				topRightViewport.x = SCREEN_WIDTH / 2;
 				topRightViewport.y = 0;
 				topRightViewport.w = SCREEN_WIDTH / 2;
-				topRightViewport.h = SCREEN_HEIGHT;
+				topRightViewport.h = SCREEN_HEIGHT- 200;
 				SDL_RenderSetViewport( gRenderer, &topRightViewport );
 				
 				//Render texture to screen
