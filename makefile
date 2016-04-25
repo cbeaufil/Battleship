@@ -1,7 +1,6 @@
-BattleshipGame: game.o BattleshipGame.o Carrier.o Battleship1.o Destroyer.o Submarine.o PatrolBoat.o Ship.o
-	g++ game.o BattleshipGame.o Ship.o Carrier.o Battleship1.o Destroyer.o Submarine.o PatrolBoat.o -o battleship
+BattleshipGame: BattleshipGame.o Carrier.o Battleship1.o Destroyer.o Submarine.o PatrolBoat.o Ship.o
+	g++ game.cpp -w -lSDL2 -lSDL2_image BattleshipGame.o Ship.o Carrier.o Battleship1.o Destroyer.o Submarine.o PatrolBoat.o -o battleship
 
-game.o: game.cpp BattleshipGame.h makefile
 
 BattleshipGame.o: BattleshipGame.cpp BattleshipGame.h Carrier.h makefile
 

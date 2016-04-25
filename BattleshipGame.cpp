@@ -70,67 +70,67 @@ char BattleshipGame::getComputer(int row, int col){
 	return computerBoard[row][col];
 }
 
-void BattleshipGame::play() {
+int BattleshipGame::turn(int mouseX, int mouseY) {
 	char letterChoice;
 	int hit = 0;
 	int Valid = 0;
 
+	/*if (!permission) {
+		cout << "Choose another spot!" << endl;
+		return 1;
+	}*/
 
-	while (value) {
-		// Player Turn
-		do {
-			do {
-				value = game();
-				if (!value) {
-					break;
-				}
-				cout << "Choose a letter to select a spot to send in a missile: ";
+	// Player Turn
+	//do {
+		//do {
+			spotB = mouseX/28;
+			spotA = mouseY/28;
+
+
+/*				cout << "Choose a letter to select a spot to send in a missile: ";
 				cin >> letterChoice;
 				spotA = toupper(letterChoice) - 65;
 				cout << "Choose a number to select a spot to send in a missile: ";
 				cin >> spotB;
 				spotB = spotB - 1;
-				Valid = checkValid(spotA, spotB);
-				if (Valid == 1) {
-					break;
-				}
-			} while (1);
-			
-			if (!value) {
-				break;
+*/			Valid = checkValid(spotA, spotB);
+			if (!Valid) {
+				return 1;
 			}
+		//} while (!Valid);
 
-			if (computerBoard[spotA][spotB] != 'O') {
-				computerBoard[spotA][spotB] = 'H';
-				cout << "That's a hit!" << endl;
-				hit = 1;
-			} else {
-				computerBoard[spotA][spotB] = 'M';
-				cout << "You missed!" << endl;
-				hit = 0;
-			}
-			value = game();
-		} while (hit);
+		
+		if (computerBoard[spotA][spotB] != 'O') {
+			computerBoard[spotA][spotB] = 'H';
+			cout << "That's a hit!" << endl;
+			hit = 1;
+		} else {
+			computerBoard[spotA][spotB] = 'M';
+			cout << "You missed!" << endl;
+			hit = 0;
+		}
+	//} while (hit);
 
-		computerPlay();
+	cout << "COMPUTER:" << endl;
+	displayComputer();
+	cout << "USER:" << endl;
+	displayUser();
 
-		cout << "COMPUTER:" << endl;
-	 	displayComputer();
-	 	cout << "USER:" << endl;
-	 	displayUser();
-	}
+	game();
+	cout << "User value: " << userValue << endl;
+	cout << "comp value: " << computerValue << endl;
 
 	if (userValue == 0) {
 		cout << "The computer player has won!" << endl;
 	} else if (computerValue == 0) {
 		cout << "Congrats! You won!" << endl;
 	}		
-
+	return hit;
 }
 
 int BattleshipGame::game() {
-	int userValue = 0;
-	int computerValue = 0;
+	userValue = 0;
+	computerValue = 0;
 
 	for (int i=0; i < boardSize; i++) {
 		for (int j=0; j < boardSize; j++) {
@@ -142,6 +142,8 @@ int BattleshipGame::game() {
 			}
 		}
 	}
+	cout << "User value: " << userValue << endl;
+	cout << "comp value: " << computerValue << endl;
 
 	if (userValue == 0) {
 		return userValue;
@@ -163,7 +165,7 @@ int BattleshipGame::checkValid(int spotA, int spotB) {
 		return 0;
 	}
 	else if (computerBoard[spotA][spotB] == 'M' || computerBoard[spotA][spotB] == 'H') {
-		cout << "You have already shot a missle here! Try a new strategy." << endl;
+		cout << "You have already shot a missle here! Try a new strategy." << spotA << spotB << endl;
 		return 0;
 	}
 

@@ -26,7 +26,7 @@ class BattleshipGame {
 	BattleshipGame(int size=10);
 	int userplaceship(Ship s, int, int, int);
 	void computerplaceship(Ship s, int, int, int);
-	void play();
+	int turn(int, int);
 	int checkValid(int, int);
 	char getUser(int, int) const;
 	char getComputer(int, int);
