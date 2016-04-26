@@ -13,6 +13,7 @@ class.
 4/4/16 2 hours - Completed SDL program.
 4/13/16 3 hours - Worked on completing the board, as well as the ship class. Game is functional from the user perspective.
 4/24/16 7.5 hours - Completed the game, as well as the AI, fully functional in the terminal. Modified some graphics as well.
+4/25/16 8.5 hours - Troubleshooting the game, create graphics from the user perspective.
 
 Matt Reilly:
 
