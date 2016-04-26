@@ -17,4 +17,4 @@ Submarine.o: Ship.h Submarine.h makefile
 PatrolBoat.o: Ship.h PatrolBoat.h makefile
 
 clean:
-	rm -f *.o BattleshipGame
+	rm -f *.o battleship
