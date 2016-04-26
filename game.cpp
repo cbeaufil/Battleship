@@ -30,6 +30,7 @@ enum LButtonSprite
 	BLUE = 3,
 	RED = 1,
 	NONE = 5,
+	TITLE = 6,
 	BUTTON_SPRITE_TOTAL = 4
 };
 
@@ -122,9 +123,12 @@ SDL_Renderer* gRenderer = NULL;
 //Mouse button sprites
 SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
 LTexture gButtonSpriteSheetTexture;
+// SDL_Rect gTitleClip[ 0 ];
+LTexture gTitleScreen;
 
 //Buttons objects
-LButton gButtons[ 2*TOTAL_BUTTONS ]; 
+LButton gButtons[ 2*TOTAL_BUTTONS ];
+LButton gTitle[ 0 ];
 
 BattleshipGame game;
 
@@ -348,10 +352,11 @@ void LButton::handleEvent( SDL_Event* e )
 	
 void LButton::render(int color)
 {
-	if (color == NONE) 
+	if (color == NONE) {
 		gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
-	else
+	} else {
 		gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ color ] );
+	}
 
 
 }
@@ -415,8 +420,11 @@ bool loadMedia()
 	//Loading success flag
 	bool success = true;
 
+// 
+// !gTitleScreen.loadFromFile( "graphics/titlescreen.bmp" )
+
 	//Load sprites
-	if( !gButtonSpriteSheetTexture.loadFromFile( "graphics/battleshipSprites.bmp" ) )
+	if(!gButtonSpriteSheetTexture.loadFromFile("graphics/battleshipSprites.bmp" ) || !gTitleScreen.loadFromFile( "graphics/titlescreen.bmp" ))
 	{
 		printf( "Failed to load button sprite texture!\n" );
 		success = false;
@@ -489,9 +497,29 @@ int main( int argc, char* args[] )
 			printf( "Failed to load media!\n" );
 		}
 		else
-		{	
+		{
+				
+			gTitleScreen.render( 0, 0 );
+
+			//Update screen
+			SDL_RenderPresent( gRenderer );
+
+			SDL_Event e2;
+
 			//Main loop flag
 			bool quit = false;
+			bool keyboard = false;
+			SDL_PollEvent( &e2 ) != 0;
+
+			while ( !keyboard ) {
+				SDL_PollEvent( &e2 ) != 0;
+				if ( e2.type == SDL_QUIT ) {
+					quit = true;
+					break;
+				} else if (e2.type == SDL_KEYDOWN ) {
+					keyboard = true;
+				}
+			}
 
 			//Event handler
 			SDL_Event e;

@@ -282,7 +282,6 @@ void BattleshipGame::computerPlay() {
 	int left, right, down, up;
 
 	do {
-		sleep(1);
 		value = game();
 		if (!value) {
 			cout << "The computer player has won!" << endl;
@@ -430,6 +429,9 @@ int BattleshipGame::checkLeft() {
 				cout << "The enemy sunk your patrol boat!" << endl;
 			}
 			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol - count] == 'H') {
+			count += 1;
+			return 1;
 		}
 	}
 	return 0;
@@ -492,6 +494,9 @@ int BattleshipGame::checkRight() {
 			if (shipSunk) {
 				cout << "The enemy sunk your patrol boat!" << endl;
 			}
+			return 1;
+		} else if (userBoard[compPrevRow][compPrevCol + count] == 'H') {
+			count += 1;
 			return 1;
 		}
 	}
@@ -556,6 +561,9 @@ int BattleshipGame::checkUp() {
 				cout << "The enemy sunk your patrol boat!" << endl;
 			}
 			return 1;
+		} else if (userBoard[compPrevRow - count][compPrevCol] == 'H') {
+			count += 1;
+			return 1;
 		}
 	}
 	return 0;
@@ -619,7 +627,10 @@ int BattleshipGame::checkDown() {
 				cout << "The enemy sunk your patrol boat!" << endl;
 			}
 			return 1;
-		}   
+		} else if (userBoard[compPrevRow + count][compPrevCol] == 'H') {
+			count += 1;
+			return 1;
+		}
 	}
     return 0;
 }
