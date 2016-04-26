@@ -780,6 +780,7 @@ int BattleshipGame::userplaceship (Ship s, int row, int col, int vertical){
 	}
 	else{
 		cout << "Improper ship name" << endl;
+		return 0;
 	}
 }
 
