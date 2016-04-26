@@ -31,12 +31,15 @@ Matt Reilly:
 David Durkin:
 
 3/2/16 1 hour - lab 7
-3/9/16 2.5 hours - Looking through SDL tutorials
-3/14/16 3.5 hours - Beginning work on text based Battleship
+3/9/16 2 hours - Looking through SDL tutorials
+3/14/16 3 hours - Beginning work on text based Battleship
 3/20/16 4 hours - Work on basic SDL program
-3/22/16 1.5 hours - finishing SDL program
+3/22/16 1 hours - finishing SDL program
 4/5/16 2 hours - collecting and editing various images for use in the program
 4/10/16 1 hour - editing the ship.cpp file
 4/12/16 1 hour - finishing up the play function
 4/19/16 2 hours - working on AI
 4/21/16 2 hours - implementing inheritance
+4/24/16 5 hours - Finishing up basic game function
+4/25/16 7 hours - Implementing Graphics
+4/26/16 3 hours - Adding More Graphics features and debugging gameplay
