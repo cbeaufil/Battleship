@@ -282,6 +282,7 @@ void BattleshipGame::computerPlay() {
 	int left, right, down, up;
 
 	do {
+		sleep(1);
 		value = game();
 		if (!value) {
 			cout << "The computer player has won!" << endl;

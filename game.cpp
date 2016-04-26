@@ -11,7 +11,7 @@
 #include <string>
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 280;
+const int SCREEN_WIDTH = 580;
 const int SCREEN_HEIGHT = 280;
 
 //Button constants
@@ -21,6 +21,7 @@ const int TOTAL_BUTTONS = 100;
 
 //Array to track Comp Board
 vector< vector<char> > compBoard;
+vector< vector<char> > userBoard;
 
 enum LButtonSprite
 {
@@ -28,6 +29,7 @@ enum LButtonSprite
 	GREY = 2,
 	BLUE = 3,
 	RED = 1,
+	NONE = 5,
 	BUTTON_SPRITE_TOTAL = 4
 };
 
@@ -122,7 +124,7 @@ SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
 LTexture gButtonSpriteSheetTexture;
 
 //Buttons objects
-LButton gButtons[ TOTAL_BUTTONS ]; 
+LButton gButtons[ 2*TOTAL_BUTTONS ]; 
 
 BattleshipGame game;
 
@@ -346,7 +348,7 @@ void LButton::handleEvent( SDL_Event* e )
 	
 void LButton::render(int color)
 {
-	if (color == WHITE) 
+	if (color == NONE) 
 		gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
 	else
 		gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ color ] );
@@ -438,6 +440,13 @@ bool loadMedia()
 			}
 		}
 
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				gButtons[x].setPosition((i*28) + 300, j*28);
+				x++;
+			}
+		}
+
 	}
 
 	return success;
@@ -494,6 +503,7 @@ int main( int argc, char* args[] )
 				while( SDL_PollEvent( &e ) != 0 )
 				{
 					compBoard = game.getComputer();
+					userBoard = game.getUser();
 					over = game.game();
 					//User requests quit
 					if( e.type == SDL_QUIT || !over)
@@ -511,7 +521,7 @@ int main( int argc, char* args[] )
 					}
 
 					//Handle button events
-					for( int i = 0; i < TOTAL_BUTTONS; ++i )
+					for( int i = 0; i < 2*TOTAL_BUTTONS; ++i )
 					{
 						gButtons[ i ].handleEvent( &e );
 					}
@@ -531,6 +541,26 @@ int main( int argc, char* args[] )
 								break;
 							case 'M':
 								gButtons[ set ].render(BLUE);
+								break;
+							default:
+								gButtons[ set ].render(NONE);
+								break;
+						}
+						set++;
+					}					
+				}
+
+				for( int i = 0; i < 10; i++ ) {
+					for (int j = 0; j < 10; j++) {
+						switch(userBoard[j][i]) {
+							case 'H':
+								gButtons[ set ].render(RED);
+								break;
+							case 'M':
+								gButtons[ set ].render(BLUE);
+								break;
+							case 'B': case 'D': case 'C': case 'P': case 'S':
+								gButtons[ set ].render(GREY);
 								break;
 							default:
 								gButtons[ set ].render(WHITE);

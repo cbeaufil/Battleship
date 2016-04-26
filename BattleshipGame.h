@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
 using namespace std;
 
 class BattleshipGame {
