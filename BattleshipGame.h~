@@ -28,7 +28,7 @@ class BattleshipGame {
 	void computerplaceship(Ship s, int, int, int);
 	int turn(int, int);
 	int checkValid(int, int);
-	vector< vector<char> > getUser() const;
+	char getUser(int, int) const;
 	vector< vector<char> > getComputer();
 	void displayUser();
 	void displayComputer();
