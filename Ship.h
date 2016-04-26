@@ -17,6 +17,7 @@ public:
 	void hit();
 	int isSunk();
 	int getLength();
+	void reset();
 
 private:
 	int vertical;

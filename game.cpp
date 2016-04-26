@@ -123,8 +123,9 @@ SDL_Renderer* gRenderer = NULL;
 //Mouse button sprites
 SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
 LTexture gButtonSpriteSheetTexture;
-// SDL_Rect gTitleClip[ 0 ];
 LTexture gTitleScreen;
+LTexture gWinningScreen;
+LTexture gLosingScreen;
 
 //Buttons objects
 LButton gButtons[ 2*TOTAL_BUTTONS ];
@@ -424,7 +425,7 @@ bool loadMedia()
 // !gTitleScreen.loadFromFile( "graphics/titlescreen.bmp" )
 
 	//Load sprites
-	if(!gButtonSpriteSheetTexture.loadFromFile("graphics/battleshipSprites.bmp" ) || !gTitleScreen.loadFromFile( "graphics/titlescreen.bmp" ))
+	if(!gButtonSpriteSheetTexture.loadFromFile("graphics/battleshipSprites.bmp" ) || !gTitleScreen.loadFromFile( "graphics/titlescreen.bmp" ) || !gWinningScreen.loadFromFile("graphics/winningScreen.bmp") || !gLosingScreen.loadFromFile("graphics/losingScreen.bmp"))
 	{
 		printf( "Failed to load button sprite texture!\n" );
 		success = false;
@@ -478,134 +479,159 @@ void close()
 
 int main( int argc, char* args[] )
 {
-	srand(time(NULL));
-	int result, over;
-	int permission = 1;
-	game.placeUserShips();
-	game.placeComputerShips();
+	bool play = false;
+	bool quit = false;
 
-	//Start up SDL and create window
-	if( !init() )
-	{
-		printf( "Failed to initialize!\n" );
-	}
-	else
-	{
-		//Load media
-		if( !loadMedia() )
+	do {
+		play = false;
+		srand(time(NULL));
+		int result, over;
+		int permission = 1;
+		game.initializeBoards();
+
+		//Start up SDL and create window
+		if( !init() )
 		{
-			printf( "Failed to load media!\n" );
+			printf( "Failed to initialize!\n" );
 		}
 		else
 		{
-				
-			gTitleScreen.render( 0, 0 );
-
-			//Update screen
-			SDL_RenderPresent( gRenderer );
-
-			SDL_Event e2;
-
-			//Main loop flag
-			bool quit = false;
-			bool keyboard = false;
-			SDL_PollEvent( &e2 ) != 0;
-
-			while ( !keyboard ) {
-				SDL_PollEvent( &e2 ) != 0;
-				if ( e2.type == SDL_QUIT ) {
-					quit = true;
-					break;
-				} else if (e2.type == SDL_KEYDOWN ) {
-					keyboard = true;
-				}
-			}
-
-			//Event handler
-			SDL_Event e;
-
-			//While application is running
-			while( !quit )
+			//Load media
+			if( !loadMedia() )
 			{
-				//Handle events on queue
-				while( SDL_PollEvent( &e ) != 0 )
-				{
-					compBoard = game.getComputer();
-					userBoard = game.getUser();
-					over = game.game();
-					//User requests quit
-					if( e.type == SDL_QUIT || !over)
-					{
-						quit = true;
-					} else if ( e.type == SDL_MOUSEBUTTONDOWN ) {
-						//Get mouse position
-						int x, y;
-						SDL_GetMouseState( &x, &y );
-						result = game.turn(x, y);
-						if (result) {
-							break;
-						}
-						game.computerPlay();
-					}
-
-					//Handle button events
-					for( int i = 0; i < 2*TOTAL_BUTTONS; ++i )
-					{
-						gButtons[ i ].handleEvent( &e );
-					}
-				}
-
-				//Clear screen
-				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-				SDL_RenderClear( gRenderer );
-
-				//Render buttons
-				int set = 0;
-				for( int i = 0; i < 10; i++ ) {
-					for (int j = 0; j < 10; j++) {
-						switch(compBoard[j][i]) {
-							case 'H':
-								gButtons[ set ].render(RED);
-								break;
-							case 'M':
-								gButtons[ set ].render(BLUE);
-								break;
-							default:
-								gButtons[ set ].render(NONE);
-								break;
-						}
-						set++;
-					}					
-				}
-
-				for( int i = 0; i < 10; i++ ) {
-					for (int j = 0; j < 10; j++) {
-						switch(userBoard[j][i]) {
-							case 'H':
-								gButtons[ set ].render(RED);
-								break;
-							case 'M':
-								gButtons[ set ].render(BLUE);
-								break;
-							case 'B': case 'D': case 'C': case 'P': case 'S':
-								gButtons[ set ].render(GREY);
-								break;
-							default:
-								gButtons[ set ].render(WHITE);
-								break;
-						}
-						set++;
-					}					
-				}
+				printf( "Failed to load media!\n" );
+			}
+			else
+			{
+				
+				gTitleScreen.render( 0, 0 );
 
 				//Update screen
 				SDL_RenderPresent( gRenderer );
+				SDL_Event e2;
+
+				//Main loop flag
+				bool quit = false;
+				bool keyboard = false;
+				SDL_PollEvent( &e2 );
+
+				while ( !keyboard ) {
+					SDL_PollEvent( &e2 );
+					if ( e2.type == SDL_QUIT ) {
+						quit = true;
+						break;
+					} else if (e2.type == SDL_KEYDOWN ) {
+						keyboard = true;
+					}
+				}
+
+				//Event handler
+				SDL_Event e;
+
+				//While application is running
+				while( !quit )
+				{
+					//Handle events on queue
+					while( SDL_PollEvent( &e ) != 0 )
+					{
+						compBoard = game.getComputer();
+						userBoard = game.getUser();
+						over = game.game();
+						//User requests quit
+						if( e.type == SDL_QUIT || over)
+						{
+							quit = true;
+						} else if ( e.type == SDL_MOUSEBUTTONDOWN ) {
+							//Get mouse position
+							int x, y;
+							SDL_GetMouseState( &x, &y );
+							result = game.turn(x, y);
+							if (result) {
+								break;
+							}
+							game.computerPlay();
+						}
+
+						//Handle button events
+						for( int i = 0; i < 2*TOTAL_BUTTONS; ++i )
+						{
+							gButtons[ i ].handleEvent( &e );
+						}
+					}
+
+					//Clear screen
+					SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+					SDL_RenderClear( gRenderer );
+
+					//Render buttons
+					int set = 0;
+					for( int i = 0; i < 10; i++ ) {
+						for (int j = 0; j < 10; j++) {
+							switch(compBoard[j][i]) {
+								case 'H':
+									gButtons[ set ].render(RED);
+									break;
+								case 'M':
+									gButtons[ set ].render(BLUE);
+									break;
+								default:
+									gButtons[ set ].render(NONE);
+									break;
+							}
+							set++;
+						}					
+					}
+
+					for( int i = 0; i < 10; i++ ) {
+						for (int j = 0; j < 10; j++) {
+							switch(userBoard[j][i]) {
+								case 'H':
+									gButtons[ set ].render(RED);
+									break;
+								case 'M':
+									gButtons[ set ].render(BLUE);
+									break;
+								case 'B': case 'D': case 'C': case 'P': case 'S':
+									gButtons[ set ].render(GREY);
+									break;
+								default:
+									gButtons[ set ].render(WHITE);
+									break;
+							}
+							set++;
+						}					
+					}
+
+					//Update screen
+					SDL_RenderPresent( gRenderer );
+				}
 			}
 		}
-	}
+		if (over == 1) {
+			gLosingScreen.render( 0, 0 );
+		} else if (over == 2) {
+			gWinningScreen.render( 0, 0 );
+		}
 
-	//Free resources and close SDL
-	close();
+
+		//Update screen
+		SDL_RenderPresent( gRenderer );
+		SDL_Event e3;
+
+		while ( !play ) {
+			SDL_PollEvent( &e3 );
+			if ( e3.type == SDL_QUIT ) {
+				quit = true;
+				break;
+			} else if (e3.type == SDL_KEYDOWN ) {
+				play = true;
+
+			}
+		}
+
+		//Free resources and close SDL
+		close();
+	} while (play);
 
 	return 0;
 }

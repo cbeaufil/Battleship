@@ -42,3 +42,7 @@ int Ship::isSunk(){
 void Ship::hit(){
 	hits++;
 }
+
+void Ship::reset(){
+	hits = 0;
+}
