@@ -268,7 +268,7 @@ void BattleshipGame::placeComputerShips() {
 	computerplaceship(submarine, randrow(), randcol(), randVertical());
 	computerplaceship(destroyer, randrow(), randcol(), randVertical());
 	computerplaceship(patrolboat, randrow(), randcol(), randVertical());
-	cout << "placing copmuter ships" << endl;
+	cout << "Placing Computer Ships ..." << endl;
 }
 
 int BattleshipGame::randrow() {
