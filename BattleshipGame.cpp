@@ -66,8 +66,8 @@ char BattleshipGame::getUser(int row, int col) const{
 	return userBoard[row][col];
 }
 
-char BattleshipGame::getComputer(int row, int col){
-	return computerBoard[row][col];
+vector< vector<char> > BattleshipGame::getComputer(){
+	return computerBoard;
 }
 
 int BattleshipGame::turn(int mouseX, int mouseY) {
@@ -117,8 +117,6 @@ int BattleshipGame::turn(int mouseX, int mouseY) {
 	displayUser();
 
 	game();
-	cout << "User value: " << userValue << endl;
-	cout << "comp value: " << computerValue << endl;
 
 	if (userValue == 0) {
 		cout << "The computer player has won!" << endl;
@@ -142,8 +140,6 @@ int BattleshipGame::game() {
 			}
 		}
 	}
-	cout << "User value: " << userValue << endl;
-	cout << "comp value: " << computerValue << endl;
 
 	if (userValue == 0) {
 		return userValue;

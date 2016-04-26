@@ -29,13 +29,13 @@ class BattleshipGame {
 	int turn(int, int);
 	int checkValid(int, int);
 	char getUser(int, int) const;
-	char getComputer(int, int);
+	vector< vector<char> > getComputer();
 	void displayUser();
 	void displayComputer();
 	void placeUserShips();
-    int randrow();
-    int randcol();
-    void placeComputerShips();
+    	int randrow();
+    	int randcol();
+    	void placeComputerShips();
 	void computerPlay();
 	int checkLeft();
 	int checkRight();
@@ -50,14 +50,14 @@ class BattleshipGame {
 	int spotA;
 	int spotB;
 	int previousPosition;
-    int compPrevRow;
-    int compPrevCol;
-    int compOnTarget;   // Was last shot a hit?
-    int compPrevHit;
-    int compNextRow;
-    int compNextCol;
-    int initialRow;
-    int initialCol;
+    	int compPrevRow;
+    	int compPrevCol;
+    	int compOnTarget;   // Was last shot a hit?
+    	int compPrevHit;
+    	int compNextRow;
+    	int compNextCol;
+    	int initialRow;
+    	int initialCol;
 	int shipSunk;
 	int count;
 	int direction;

@@ -17,14 +17,17 @@ const int SCREEN_HEIGHT = 300;
 //Button constants
 const int BUTTON_WIDTH = 28;
 const int BUTTON_HEIGHT = 28;
-const int TOTAL_BUTTONS = 200;
+const int TOTAL_BUTTONS = 100;
+
+//Array to track Comp Board
+vector< vector<char> > compBoard;
 
 enum LButtonSprite
 {
-	BUTTON_SPRITE_MOUSE_OUT = 0,
-	BUTTON_SPRITE_MOUSE_OVER_MOTION = 1,
-	BUTTON_SPRITE_MOUSE_DOWN = 2,
-	BUTTON_SPRITE_MOUSE_UP = 3,
+	WHITE = 0,
+	GREY = 2,
+	BLUE = 3,
+	RED = 1,
 	BUTTON_SPRITE_TOTAL = 4
 };
 
@@ -88,7 +91,7 @@ class LButton
 		void handleEvent( SDL_Event* e );
 	
 		//Shows button sprite
-		void render();
+		void render(int);
 
 
 	private:
@@ -275,7 +278,7 @@ LButton::LButton()
 	mPosition.x = 0;
 	mPosition.y = 0;
 
-	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
+	mCurrentSprite = WHITE;
 }
 
 void LButton::setPosition( int x, int y )
@@ -320,7 +323,7 @@ void LButton::handleEvent( SDL_Event* e )
 		//Mouse is outside button
 		if( !inside )
 		{
-			mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
+			mCurrentSprite = WHITE;
 		}
 		//Mouse is inside button
 		else
@@ -329,11 +332,11 @@ void LButton::handleEvent( SDL_Event* e )
 			switch( e->type )
 			{
 				case SDL_MOUSEMOTION:
-				mCurrentSprite = BUTTON_SPRITE_MOUSE_DOWN;
+				mCurrentSprite = GREY;
 				break;
 			
 				case SDL_MOUSEBUTTONDOWN:
-				mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
+				mCurrentSprite = BLUE;
 				break;
 				
 			}
@@ -341,10 +344,14 @@ void LButton::handleEvent( SDL_Event* e )
 	}
 }
 	
-void LButton::render()
+void LButton::render(int color)
 {
-	//Show current button sprite
-	gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
+	if (color == WHITE) 
+		gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
+	else
+		gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ color ] );
+
+
 }
 
 bool init()
@@ -367,7 +374,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "BATTLESHIP", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -431,13 +438,6 @@ bool loadMedia()
 			}
 		}
 
-
-		//Set buttons in corners
-		/*gButtons[ 0 ].setPosition( 0, 0 );
-		gButtons[ 1 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, 0 );
-		gButtons[ 2 ].setPosition( 0, SCREEN_HEIGHT - BUTTON_HEIGHT );
-		gButtons[ 3 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, SCREEN_HEIGHT - BUTTON_HEIGHT );
-	*/
 	}
 
 	return success;
@@ -462,7 +462,7 @@ void close()
 int main( int argc, char* args[] )
 {
 	srand(time(NULL));
-	int hit;
+	int result, over;
 	int permission = 1;
 	game.placeUserShips();
 	game.placeComputerShips();
@@ -493,21 +493,20 @@ int main( int argc, char* args[] )
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
+					compBoard = game.getComputer();
+					over = game.game();
 					//User requests quit
-					if( e.type == SDL_QUIT )
+					if( e.type == SDL_QUIT || !over)
 					{
 						quit = true;
 					} else if ( e.type == SDL_MOUSEBUTTONDOWN ) {
-						//do {
-							//permission = SDL_MOUSEBUTTONDOWN;
-							//Get mouse position
-							int x, y;
-							SDL_GetMouseState( &x, &y );
-							hit = game.turn(x, y);
-						if (hit) {
+						//Get mouse position
+						int x, y;
+						SDL_GetMouseState( &x, &y );
+						result = game.turn(x, y);
+						if (result) {
 							break;
 						}
-						//} while (success);
 						game.computerPlay();
 					}
 
@@ -523,9 +522,22 @@ int main( int argc, char* args[] )
 				SDL_RenderClear( gRenderer );
 
 				//Render buttons
-				for( int i = 0; i < TOTAL_BUTTONS; ++i )
-				{
-					gButtons[ i ].render();
+				int set = 0;
+				for( int i = 0; i < 10; i++ ) {
+					for (int j = 0; j < 10; j++) {
+						switch(compBoard[j][i]) {
+							case 'H':
+								gButtons[ set ].render(RED);
+								break;
+							case 'M':
+								gButtons[ set ].render(BLUE);
+								break;
+							default:
+								gButtons[ set ].render(WHITE);
+								break;
+						}
+						set++;
+					}					
 				}
 
 				//Update screen
