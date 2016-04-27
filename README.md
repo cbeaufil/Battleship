@@ -35,6 +35,8 @@ closing and the user placing their ships once again in the terminal. The
 user can also quit at anytime by simply closing the window. This 
 effectively ends the program altogether. 
 
+![alt text](https://bytebucket.org/FriarUp/battleship/raw/65e9567d87d5e8ec4d681ad59130abb69855dd98/graphics/gameScreenshot.png "Screenshot")
+
    In running this program, we had very few but serious bugs. Every 
 once in a while, roughly every 1 out of 10 tries, the user will place 
 all of their ships, then the program will have a segmentation fault. The 
