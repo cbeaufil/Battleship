@@ -4,10 +4,14 @@ Fund Comp II
 ##Battleship
 
 This is a GUI implementation of the classic game Battleship by Chris Beaufils, David Durkin, and Matt Reilly.
-	Our makefile properly compiles the program to be run. The 
+
+![alt text](https://bitbucket.org/FriarUp/battleship/src/master/graphics/titlescreen.bmp "Title Screen")
+
+Our makefile properly compiles the program to be run. The 
 executable is computed using -lSDL2 -lSDL2_image to account for the 
 graphics.
-	From the user perspective, the program is not very difficult to 
+
+   From the user perspective, the program is not very difficult to 
 run. Once the program begins, the user is prompted in the terminal to 
 place their ships. They are able to do this by selecting a row using a 
 letter A-J, then by selecting a column 1-10. The indicated position is 
@@ -30,7 +34,8 @@ play again by pressing any key and the process repeats with the GUI
 closing and the user placing their ships once again in the terminal. The 
 user can also quit at anytime by simply closing the window. This 
 effectively ends the program altogether. 
-	In running this program, we had very few but serious bugs. Every 
+
+   In running this program, we had very few but serious bugs. Every 
 once in a while, roughly every 1 out of 10 tries, the user will place 
 all of their ships, then the program will have a segmentation fault. The 
 reason for this is because the computer attempts to place their ships 
