@@ -1,0 +1,9 @@
+Meetings Log
+
+3/14/16 3 hours - All Members Present. Initial Planning and programming.
+3/20/16 2 hours - All Members Present. Working on deliverables and learning Grapics.
+4/03/16 1 hour - All Members Present. Planning and delegating tasks.
+4/12/16 2 hours - All Members Present. Continuing basic game functionality programming.
+4/24/16 5 hours - All Members Present. Working with AI and gameplay.
+4/25/16 5 hours - All Members Present. Working on Graphics.
+4/26/16 4 hours - Chris and David. Finishing Touches.
