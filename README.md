@@ -50,5 +50,12 @@ places their ships this time but then the GUI window does not open. We do not
 know why this occurs, but it seems to only happen after the user plays 
 the game many times in a row. When this happens, the user has to close 
 the terminal completely in order to run the game again, because CTRL+C 
-is unresponsive. Aside from this, our game runs smoothly, and the AI functions
+is unresponsive. Our group wanted to be able to place the ships in 
+the graphics window, but we decided to concentrate our time on 
+making the gameplay function smoothly with the graphics and did not 
+think it was wise to try to implement such a large feature so late 
+in the process. The user can place ships perfectly fine in the 
+terminal, and we did not believe it was necessary to do this in the 
+graphics window. This does not take anything away from the gameplay 
+whatsoever. Aside from this, our game runs smoothly, and the AI functions
 perfectly and is very competitive.
