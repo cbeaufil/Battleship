@@ -1,4 +1,6 @@
 /* cse20212, game.cpp
+ * We worked from Lazy Foo tutorials on SDL, so some of this code is directly from the tutorials.
+ * Visit http://lazyfoo.net/SDL_tutorials/ to view the tutorials and licensing information.
 */
 
 #include "BattleshipGame.h"
