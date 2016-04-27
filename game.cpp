@@ -1,6 +1,4 @@
 /* cse20212, game.cpp
-
-
 */
 
 #include "BattleshipGame.h"
@@ -23,6 +21,7 @@ const int TOTAL_BUTTONS = 100;
 vector< vector<char> > compBoard;
 vector< vector<char> > userBoard;
 
+// Enumerated type Sprite
 enum LButtonSprite
 {
 	WHITE = 0,
@@ -351,11 +350,11 @@ void LButton::handleEvent( SDL_Event* e )
 	}
 }
 	
-void LButton::render(int color)
+void LButton::render(int color) // modified to persist proper color
 {
-	if (color == NONE) {
+	if (color == NONE) { // Keep the white or gray, depending on where mouse is
 		gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
-	} else {
+	} else { // persist color, hit or miss
 		gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ color ] );
 	}
 
@@ -440,7 +439,7 @@ bool loadMedia()
 			gSpriteClips[ i ].w = BUTTON_WIDTH;
 			gSpriteClips[ i ].h = BUTTON_HEIGHT;
 		}
-
+		// make user board
 		int x = 0;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -448,7 +447,7 @@ bool loadMedia()
 				x++;
 			}
 		}
-
+		// make computer board
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				gButtons[x].setPosition((i*28) + 300, j*28);
@@ -479,8 +478,8 @@ void close()
 
 int main( int argc, char* args[] )
 {
-	bool play = false;
-	bool quit = false;
+	bool play = false; // keep playing?
+	bool quit = false; // quit?
 
 	do {
 		play = false;
@@ -545,11 +544,12 @@ int main( int argc, char* args[] )
 							//Get mouse position
 							int x, y;
 							SDL_GetMouseState( &x, &y );
+							// execute turn
 							result = game.turn(x, y);
 							if (result) {
 								break;
 							}
-							game.computerPlay();
+							game.computerPlay(); // execute computer turn
 						}
 
 						//Handle button events
@@ -567,7 +567,7 @@ int main( int argc, char* args[] )
 					int set = 0;
 					for( int i = 0; i < 10; i++ ) {
 						for (int j = 0; j < 10; j++) {
-							switch(compBoard[j][i]) {
+							switch(compBoard[j][i]) { // set render color
 								case 'H':
 									gButtons[ set ].render(RED);
 									break;
@@ -584,7 +584,7 @@ int main( int argc, char* args[] )
 
 					for( int i = 0; i < 10; i++ ) {
 						for (int j = 0; j < 10; j++) {
-							switch(userBoard[j][i]) {
+							switch(userBoard[j][i]) { // set render color
 								case 'H':
 									gButtons[ set ].render(RED);
 									break;
