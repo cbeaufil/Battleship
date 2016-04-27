@@ -25,7 +25,11 @@ Matt Reilly:
 4/6/16 4 hours  - Testing different approaches to Battleship AI
 4/12/16 1 hour  - Working on play function
 4/13/16 1 hour  - Streamlining user experience in terminal version
-4/18/16 3.5 hours - Making advancements on AI
+4/18/16 3.5 hrs - Making advancements on AI
+4/21/16 3 hours - Organizing/commenting code
+4/25/16 6 hours - Finishing AI, creating sprite sheets
+4/26/16 7 hours - Implementing graphics functionality
+4/27/16 2 hours - Some bug fixes
 
 
 David Durkin:
