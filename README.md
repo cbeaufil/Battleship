@@ -4,9 +4,11 @@ Fund Comp II
 ##Battleship
 
 This is a GUI implementation of the classic game Battleship by Chris Beaufils, David Durkin, and Matt Reilly.
+
 >Our makefile properly compiles the program to be run. The 
 executable is computed using -lSDL2 -lSDL2_image to account for the 
 graphics.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From the user perspective, the program is not very difficult to 
 run. Once the program begins, the user is prompted in the terminal to 
 place their ships. They are able to do this by selecting a row using a 
