@@ -7,8 +7,8 @@ Fund Comp II
 
 This is a GUI implementation of the classic game Battleship by Chris Beaufils, David Durkin, and Matt Reilly.
 
-Our makefile properly compiles the program to be run. The 
-executable is computed using -lSDL2 -lSDL2_image to account for the 
+Our program is run on the student machines using the SDL library. Our 
+makefile properly compiles the program to be run. The executable is computed using -lSDL2 -lSDL2_image to account for the 
 graphics.
 
    From the user perspective, the program is not very difficult to 
@@ -44,10 +44,11 @@ reason for this is because the computer attempts to place their ships
 out of bounds. We believed this should be averted because we have a 
 function that checks if the ship placement is valid, but for some reason 
 it still occasionally fails. The other error that occurs is that after 
-the user plays 3-4 games consecutively, the program will freeze after 
-the user places their ships to begin the next game. The computer places 
-their ships this time but then the GUI window does not open. We do not 
+the user plays many games consecutively, the program occasionally 
+freezes after the user places their ships to begin the next game. The computer 
+places their ships this time but then the GUI window does not open. We do not 
 know why this occurs, but it seems to only happen after the user plays 
-the game several times in a row. Aside from this, our game runs 
-smoothly, and the AI functions perfectly.
-
+the game many times in a row. When this happens, the user has to close 
+the terminal completely in order to run the game again, because CTRL+C 
+is unresponsive. Aside from this, our game runs smoothly, and the AI functions
+perfectly and is very competitive.
