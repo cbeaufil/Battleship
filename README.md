@@ -5,6 +5,8 @@ Fund Comp II
 
 This is a GUI implementation of the classic game Battleship by Chris Beaufils, David Durkin, and Matt Reilly.
 
+![alt text](https://bitbucket.org/FriarUp/battleship/src/master/graphics/titlescreen.bmp "Title Screen")
+
 Our makefile properly compiles the program to be run. The 
 executable is computed using -lSDL2 -lSDL2_image to account for the 
 graphics.
